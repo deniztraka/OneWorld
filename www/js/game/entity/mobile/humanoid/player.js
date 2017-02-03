@@ -1,16 +1,18 @@
 function Player(game, x, y) {
     Humanoid.call(this, game, x, y, "player");
 
-    
-    
-    // Player Input Staff
+    // this.body.setSize(32, 32, 15, 15);
+
+    // Creating movement joystick
     this.joyStick = game.plugins.add(Phaser.Plugin.JoyStick);
     this.joyStick.create(75, this.game.height - 75);
-    var actionOnlicked = function (player, hodo) {
-        player.attacking = true;
-    }
-    var button = game.add.button(this.game.width - 125, this.game.height - 125, 'button', function () {
-        actionOnlicked(this);
+    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    // Adding attack button
+    var attackButton = game.add.button(this.game.width - 125, this.game.height - 125, 'button', function () {
+        this.velocityXBeforeAttack = this.body.velocity.x;
+        this.velocityYBeforeAttack = this.body.velocity.y;
+        this.isAttacking = true;
     }, this, 2, 1, 0);
 };
 
@@ -19,52 +21,33 @@ Player.prototype.constructor = Player;
 
 Player.prototype.update = function () {
     Mobile.prototype.update.call(this);
-    var self = this;
-    this.body.velocity.set(0);
-
-    // Retrieve the cursors value
-    var cursors = this.joyStick.cursors;
-
-    if (cursors.left || cursors.right || cursors.up || cursors.down) {
-        if(!this.attacking){
-            this.body.velocity.x = -this.joyStick.speed.x * this.speed;
-            this.body.velocity.y = -this.joyStick.speed.y * this.speed;
-            this.directionDegree = this.joyStick.angleFromDegrees;
-        }
-    } else if (!this.attacking) {
-        this.animations.stop();
-    }
-
-    //console.log(this.joyStick.speed.x + " " + this.joyStick.speed.y);
-
     
-
-    if (!this.attacking) {
-        if (!this.directionDegree) {
-            this.play("up");
-        } else if (this.directionDegree > -120 && this.directionDegree < -60) {
-            this.play("up");
-        } else if (this.directionDegree > -60 && this.directionDegree < 60) {
-            this.play("right");
-        } else if (this.directionDegree > 60 && this.directionDegree < 120) {
-            this.play("down");
-        } else {
-            this.play("left");
+    if (!this.isAttacking) {
+        //Movement input
+        var joyStickCursors = this.joyStick.cursors;
+        if (joyStickCursors.left || joyStickCursors.right || joyStickCursors.up || joyStickCursors.down) {
+            this.body.velocity.x = -this.joyStick.speed.x;
+            this.body.velocity.y = -this.joyStick.speed.y;
         }
-    } else {
-        if (this.directionDegree > -120 && this.directionDegree < -60) {
-            this.play("upSlash");
-        } else if (this.directionDegree > -60 && this.directionDegree < 60) {
-            this.play("rightSlash");
-        } else if (this.directionDegree > 60 && this.directionDegree < 120) {
-            this.play("downSlash");
-        } else {
-            this.play("leftSlash");
-        }        
 
-        this.animations.currentAnim.onComplete.add(function () {
-            self.attacking = false;
-        }, this);
+        var keyboardCursors = this.game.input.keyboard.createCursorKeys();
+        if (keyboardCursors.up.isDown) {
+            this.body.velocity.y = -this.movementSpeed;
+        } else if (keyboardCursors.down.isDown) {
+            this.body.velocity.y = this.movementSpeed;
+        }
+        if (keyboardCursors.left.isDown) {
+            this.body.velocity.x = -this.movementSpeed;
+        } else if (keyboardCursors.right.isDown) {
+            this.body.velocity.x = this.movementSpeed;
+        }
 
+        if (this.spaceKey.isDown)
+        {
+            this.velocityXBeforeAttack = this.body.velocity.x;
+            this.velocityYBeforeAttack = this.body.velocity.y;
+            this.isAttacking = true;
+        }
     }
+    //console.log(Math.atan2(this.body.velocity.y,this.body.velocity.x) * (180 / Math.PI));
 };

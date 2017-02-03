@@ -130,7 +130,8 @@
     }
 
     var angle = initialPoint.angle(this.pointer.position);
-    Phaser.Plugin.JoyStick.prototype.angleFromDegrees = angle * 180 / Math.PI;
+    //Phaser.Plugin.JoyStick.prototype.angleFromDegrees = 
+    //Phaser.Plugin.JoyStick.prototype.angleFromDegrees = angle * 180 / Math.PI;
     if (d > maxDistanceInPixels) {
       deltaX = Math.cos(angle) * maxDistanceInPixels;
       deltaY = Math.sin(angle) * maxDistanceInPixels;

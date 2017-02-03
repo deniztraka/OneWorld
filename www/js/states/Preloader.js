@@ -39,7 +39,7 @@ BasicGame.Preloader.prototype = {
 		game.load.spritesheet('button', 'assets/images/spritesheets/buttonSpriteSheet.png', 100, 100);
 
 		// Audio track Attribution (menu sci-fi 1.ogg, CC 3.0)
-		// Alexandr-Zhelanov: https://soundcloud.com/alexandr-zhelanov 
+		// Alexandr-Zhelanov: https://soundcloud.com/alexandr-zhelanov
 		this.load.audio('bgm', ['assets/audio/menusci-fi1.ogg', 'assets/audio/menusci-fi1.mp3']);
 
 	},

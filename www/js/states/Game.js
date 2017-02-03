@@ -18,20 +18,25 @@ BasicGame.Game = function (game) {
     this.particles; //	the particle manager
     this.physics; //	the physics manager
     this.rnd; //	the repeatable random number generator
-    this.debugMode = false;
+    this.debugMode;
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
 };
+
+var player;
+var skeleton;
 BasicGame.Game.prototype = {
 
     create: function () {
-
+        this.debugMode = true;
+        this.game.enemyGroup = this.game.add.group();
         //	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-        new Player(this.game, 250, 250);
+        player = new Player(this.game, 243, 250);
+        skeleton = new Skeleton(this.game, 280, 280);
 
-        new Skeleton(this.game, 350,350);
-        
+        this.game.enemyGroup.add(skeleton);
+
     },
 
     update: function () {
@@ -41,8 +46,22 @@ BasicGame.Game.prototype = {
 
     render: function () {
         if (this.debugMode) {
-            //down left joystick area render
-            this.game.debug.geom(new Phaser.Rectangle(0, this.game.height / 2, this.game.width / 3, this.game.height / 2), 'rgba(255,0,0,0.5)');
+            if (skeleton) {
+                this.game.debug.geom(skeleton.line);
+                //this.game.debug.spriteBounds(skeleton);                
+                //game.debug.geom( skeleton.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
+            }
+            if (player) {
+                //this.game.debug.geom(player.line);
+                if (player.lines) {
+                    for (var i = 0; i < player.lines.length; i++) {
+                        this.game.debug.geom(player.lines[i]);
+                    }
+                }
+                //this.game.debug.spriteBounds(player);
+                this.game.debug.spriteInfo(player, 32, 32);
+                //game.debug.geom( player.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
+            }
         }
     },
 

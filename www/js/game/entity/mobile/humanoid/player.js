@@ -54,7 +54,12 @@ function Player(game, x, y) {
     rightUI.fixedToCamera = true;
 
     
-
+    this.movementKeys = {
+        w:game.input.keyboard.addKey(Phaser.Keyboard.W),
+        a:game.input.keyboard.addKey(Phaser.Keyboard.A),
+        s:game.input.keyboard.addKey(Phaser.Keyboard.S),
+        d:game.input.keyboard.addKey(Phaser.Keyboard.D)
+    }
     
 
     
@@ -62,6 +67,22 @@ function Player(game, x, y) {
 
 Player.prototype = Object.create(Humanoid.prototype);
 Player.prototype.constructor = Player;
+
+Mobile.prototype.damage = function (value) {
+    var self = this;
+    this.alive = false;
+    this.body.velocity.setTo(0, 0);
+    this.animations.stop();
+    this.animations.play('die');
+    this.animations.currentAnim.onComplete.addOnce(function () {
+        self.inputEnabled = false;
+        if (self.input) {
+            self.input.useHandCursor = false;
+        }
+        self.events.destroy();
+        Mobile.prototype.damage.call(self,value);
+    }, this);
+};
 
 Player.prototype.update = function () {
     Mobile.prototype.update.call(this);
@@ -74,15 +95,15 @@ Player.prototype.update = function () {
             this.body.velocity.y = -this.joyStick.speed.y;
         }
 
-        var keyboardCursors = this.game.input.keyboard.createCursorKeys();
-        if (keyboardCursors.up.isDown) {
+        var keyboardCursors = this.game.input.keyboard.createCursorKeys();        
+        if (keyboardCursors.up.isDown || this.movementKeys.w.isDown) {
             this.body.velocity.y = -this.movementSpeed;
-        } else if (keyboardCursors.down.isDown) {
+        } else if (keyboardCursors.down.isDown || this.movementKeys.s.isDown) {
             this.body.velocity.y = this.movementSpeed;
         }
-        if (keyboardCursors.left.isDown) {
+        if (keyboardCursors.left.isDown || this.movementKeys.a.isDown) {
             this.body.velocity.x = -this.movementSpeed;
-        } else if (keyboardCursors.right.isDown) {
+        } else if (keyboardCursors.right.isDown || this.movementKeys.d.isDown) {
             this.body.velocity.x = this.movementSpeed;
         }
 

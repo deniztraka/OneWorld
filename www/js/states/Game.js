@@ -19,6 +19,7 @@ BasicGame.Game = function (game) {
     this.physics; //	the physics manager
     this.rnd; //	the repeatable random number generator
     this.debugMode;
+    this.bg;
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
@@ -29,14 +30,17 @@ var skeleton;
 BasicGame.Game.prototype = {
 
     create: function () {
-        this.debugMode = true;
+        this.debugMode = false;
+        this.bg = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'dirt');
+
         this.game.enemyGroup = this.game.add.group();
         //	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-        player = new Player(this.game, 243, 250);
-        skeleton = new Skeleton(this.game, 280, 280);
+        player = new Player(this.game, this.game.width/2, this.game.height/2);
+        // skeleton = new Skeleton(this.game, 280, 280);
 
-        this.game.enemyGroup.add(skeleton);
+        // this.game.enemyGroup.add(skeleton);
 
+        	
     },
 
     update: function () {
@@ -73,6 +77,16 @@ BasicGame.Game.prototype = {
         //	Then let's go back to the main menu.
         this.state.start('MainMenu');
 
-    }
+    },
+    resize: function (width, height) {
+
+		//	If the game container is resized this function will be called automatically.
+		//	You can use it to align sprites that should be fixed in place and other responsive display things.
+
+		this.bg.width = width;
+		this.bg.height = height;
+
+
+	}
 
 };

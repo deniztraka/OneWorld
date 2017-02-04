@@ -19,7 +19,7 @@ function Mobile(game, x, y, texture) {
 
     this.animations.add('die', [20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5], 10, false);
 
-    this.movementSpeed = 10;
+    this.movementSpeed = 40;
     this.health = 100;
     this.directionDegree = 0;
     this.isAttacking = false;
@@ -105,7 +105,7 @@ Mobile.prototype.attack = function () {
         this.game.enemyGroup.forEachAlive(function (enemy) {
 
             //looping through cordinats
-            for (var i = 0; i < coords.length; i++) {
+            for (var i = Math.round(coords.length/2); i < coords.length; i++) {
 
                 //if a coordinat in that ray hits the enemy.
                 if (enemy.body.hitTest(coords[i][0], coords[i][1])) {

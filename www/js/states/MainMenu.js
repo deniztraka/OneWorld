@@ -46,7 +46,6 @@ BasicGame.MainMenu.prototype = {
 	startGame: function () {
 		this.music.stop();
 		this.state.start("Game");
-		console.log("aasdasd");
 	}
 
 };

@@ -19,7 +19,7 @@ function Mobile(game, x, y, texture) {
 
     this.animations.add('die', [20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5], 10, false);
 
-    this.movementSpeed = 40;
+    this.movementSpeed = 30;
     this.health = 100;
     this.directionDegree = 0;
     this.isAttacking = false;

@@ -6,12 +6,12 @@ function Player(game, x, y) {
     
 
     //Creating UI
-    var bottomUI = game.add.sprite(this.game.width / 2, this.game.height - 135, 'bottomUI');
-    bottomUI.fixedToCamera = true;
-    bottomUI.anchor.setTo(0.5, 0.0);
+    // var bottomUI = game.add.sprite(this.game.width / 2, this.game.height - 135, 'bottomUI');
+    // bottomUI.fixedToCamera = true;
+    //bottomUI.anchor.setTo(0.5, 0.0);
     this.myHealthBar = new HealthBar(game, {
         x: 225,
-        y: game.height - 50,
+        y: game.height - 40,
         width: 150,
         height: 25,
         bg: {
@@ -24,7 +24,7 @@ function Player(game, x, y) {
     this.myHealthBar.setFixedToCamera(true);
     this.myEnergyBar = new HealthBar(game, {
         x: game.width - 225,
-        y: game.height - 50,
+        y: game.height - 40,
         width: 150,
         height: 25,
         bg: {
@@ -39,18 +39,18 @@ function Player(game, x, y) {
     this.myHealthBar.setPercent(50);
     this.myEnergyBar.setPercent(75);
     // Adding attack button
-    var attackButton = game.add.button(this.game.width - 125, this.game.height - 125, 'button', function () {
+    var attackButton = game.add.button(this.game.width - 125, this.game.height - 114, 'button', function () {
         this.velocityXBeforeAttack = this.body.velocity.x;
         this.velocityYBeforeAttack = this.body.velocity.y;
         this.isAttacking = true;
     }, this, 2, 1, 0);
     // Creating movement joystick
     this.joyStick = game.plugins.add(Phaser.Plugin.JoyStick);
-    this.joyStick.create(75, this.game.height - 75);
+    this.joyStick.create(75, this.game.height - 64);
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    var leftUI = game.add.sprite(0, this.game.height - 170, 'leftUI');
+    var leftUI = game.add.sprite(0, this.game.height - 130, 'leftUI');
     leftUI.fixedToCamera = true;
-    var rightUI = game.add.sprite(this.game.width - 321, this.game.height - 170, 'rightUI');
+    var rightUI = game.add.sprite(this.game.width - 321, this.game.height - 130, 'rightUI');
     rightUI.fixedToCamera = true;
 
     

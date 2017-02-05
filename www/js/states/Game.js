@@ -20,24 +20,28 @@ BasicGame.Game = function (game) {
     this.rnd; //	the repeatable random number generator
     this.debugMode;
     this.bg;
+    this.baci;
+    this.player;
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
 };
 
-var player;
-var skeleton;
 BasicGame.Game.prototype = {
 
     create: function () {
         this.debugMode = false;
-        this.bg = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'dirt');
+        var map = this.game.add.tilemap('map');
+
+        map.addTilesetImage('grass');
+        map.createLayer("floorLayer");
+        //this.bg = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'dirt');
 
         this.game.enemyGroup = this.game.add.group();
         //	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-        player = new Player(this.game, this.game.width/2, this.game.height/2);
+        this.player = new Player(this.game, this.game.width/2, this.game.height/2);
         // skeleton = new Skeleton(this.game, 280, 280);
-
+        this.baci = new Baci(this.game,this.game.width/2, this.game.height-75);
         // this.game.enemyGroup.add(skeleton);
 
         	
@@ -45,7 +49,7 @@ BasicGame.Game.prototype = {
 
     update: function () {
         //	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!        
-
+        
     },
 
     render: function () {
@@ -55,15 +59,15 @@ BasicGame.Game.prototype = {
                 //this.game.debug.spriteBounds(skeleton);                
                 //game.debug.geom( skeleton.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
             }
-            if (player) {
+            if (this.player) {
                 //this.game.debug.geom(player.line);
-                if (player.lines) {
-                    for (var i = 0; i < player.lines.length; i++) {
-                        this.game.debug.geom(player.lines[i]);
+                if (this.player.lines) {
+                    for (var i = 0; i < this.player.lines.length; i++) {
+                        this.game.debug.geom(this.player.lines[i]);
                     }
                 }
                 //this.game.debug.spriteBounds(player);
-                this.game.debug.spriteInfo(player, 32, 32);
+                this.game.debug.spriteInfo(this.player, 32, 32);
                 //game.debug.geom( player.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
             }
         }
@@ -83,8 +87,8 @@ BasicGame.Game.prototype = {
 		//	If the game container is resized this function will be called automatically.
 		//	You can use it to align sprites that should be fixed in place and other responsive display things.
 
-		this.bg.width = width;
-		this.bg.height = height;
+		// this.bg.width = width;
+		// this.bg.height = height;
 
 
 	}

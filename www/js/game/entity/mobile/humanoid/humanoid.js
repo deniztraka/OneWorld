@@ -9,3 +9,9 @@ Humanoid.prototype.constructor = Humanoid;
 Humanoid.prototype.update = function(){
       Mobile.prototype.update.call(this);
 };
+
+Humanoid.prototype.damage = function (value) {
+    Mobile.prototype.damage.call(this,value);
+    
+    
+};

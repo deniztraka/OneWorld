@@ -2,7 +2,7 @@ function Player(game, x, y) {
     Humanoid.call(this, game, x, y, "player");
 
     // this.body.setSize(32, 32, 15, 15);
-
+    this.body.collideWorldBounds=true;
     
 
     //Creating UI
@@ -10,10 +10,10 @@ function Player(game, x, y) {
     // bottomUI.fixedToCamera = true;
     //bottomUI.anchor.setTo(0.5, 0.0);
     this.myHealthBar = new HealthBar(game, {
-        x: 225,
-        y: game.height - 40,
-        width: 150,
-        height: 25,
+        x: 244,
+        y: game.height - 17,
+        width: 117,
+        height: 15,
         bg: {
             color: '#2b2b2b'
         },
@@ -22,22 +22,7 @@ function Player(game, x, y) {
         },
     });
     this.myHealthBar.setFixedToCamera(true);
-    this.myEnergyBar = new HealthBar(game, {
-        x: game.width - 225,
-        y: game.height - 40,
-        width: 150,
-        height: 25,
-        bg: {
-            color: '#2b2b2b'
-        },
-        bar: {
-            color: '#1a3451'
-        },
-        flipped: true
-    });
-    this.myEnergyBar.setFixedToCamera(true);
-    this.myHealthBar.setPercent(50);
-    this.myEnergyBar.setPercent(75);
+   
     // Adding attack button
     var attackButton = game.add.button(this.game.width - 125, this.game.height - 114, 'button', function () {
         this.velocityXBeforeAttack = this.body.velocity.x;
@@ -50,8 +35,10 @@ function Player(game, x, y) {
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     var leftUI = game.add.sprite(0, this.game.height - 130, 'leftUI');
     leftUI.fixedToCamera = true;
+    leftUI.bringToTop();
     var rightUI = game.add.sprite(this.game.width - 321, this.game.height - 130, 'rightUI');
     rightUI.fixedToCamera = true;
+    rightUI.bringToTop();
 
     
     this.movementKeys = {
@@ -68,24 +55,15 @@ function Player(game, x, y) {
 Player.prototype = Object.create(Humanoid.prototype);
 Player.prototype.constructor = Player;
 
-Mobile.prototype.damage = function (value) {
-    var self = this;
-    this.alive = false;
-    this.body.velocity.setTo(0, 0);
-    this.animations.stop();
-    this.animations.play('die');
-    this.animations.currentAnim.onComplete.addOnce(function () {
-        self.inputEnabled = false;
-        if (self.input) {
-            self.input.useHandCursor = false;
-        }
-        self.events.destroy();
-        Mobile.prototype.damage.call(self,value);
-    }, this);
+Player.prototype.damage = function (value) {
+    Humanoid.prototype.damage.call(this,value);
+    if(this.alive){
+        this.myHealthBar.setPercent(this.health-value/100);
+    }
 };
 
 Player.prototype.update = function () {
-    Mobile.prototype.update.call(this);
+    Humanoid.prototype.update.call(this);
 
     if (!this.isAttacking) {
         //Movement input

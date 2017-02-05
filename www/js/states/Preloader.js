@@ -30,14 +30,18 @@ BasicGame.Preloader.prototype = {
 		//	Here we load the rest of the assets our game needs.
 		//	You can find all of these assets in the Phaser Examples repository
 
+		this.load.image('grass', 'assets/images/spritesheets/tilesets/grass.png');
+		this.load.tilemap('map', 'assets/images/spritesheets/tilesets/grassRandom.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.image('dirt', 'assets/images/dirt.png');
 		this.load.image('vjoy_base', 'assets/images/libs/vjoy/base.png');
         this.load.image('vjoy_body', 'assets/images/libs/vjoy/body.png');
         this.load.image('vjoy_cap', 'assets/images/libs/vjoy/cap.png');
-		this.load.image('leftUI', 'assets/images/left.png');
-		this.load.image('rightUI', 'assets/images/right.png');
+		this.load.image('leftUI', 'assets/images/left-new.png');
+		this.load.image('rightUI', 'assets/images/right-new.png');
 		this.load.image('bottomUI', 'assets/images/bottomUI.png');
 		this.load.spritesheet('player', 'assets/images/spritesheets/player.png', 64, 64);
+		this.load.spritesheet('baci', 'assets/images/spritesheets/baci.png', 64, 64);
+		this.load.spritesheet('dayi', 'assets/images/spritesheets/enemy/dayi.png', 64, 64);
 		this.load.spritesheet('skeleton', 'assets/images/spritesheets/enemy/skeleton.png', 64, 64);
 		game.load.spritesheet('button', 'assets/images/spritesheets/buttonSpriteSheet.png', 100, 100);
 

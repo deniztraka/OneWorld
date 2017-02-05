@@ -32,7 +32,7 @@
 
   Phaser.Plugin.JoyStick.prototype.settings = {
     maxDistanceInPixels: 5,
-    maxSpeed: 30
+    maxSpeed: 45
   };
 
 

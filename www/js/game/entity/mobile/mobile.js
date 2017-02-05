@@ -19,7 +19,7 @@ function Mobile(game, x, y, texture) {
 
     this.animations.add('die', [20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5], 10, false);
 
-    this.movementSpeed = 30;
+    this.movementSpeed = 45;
     this.health = 100;
     this.directionDegree = 0;
     this.isAttacking = false;
@@ -125,6 +125,12 @@ Mobile.prototype.attack = function () {
         }
     }
 }
+
+Mobile.prototype.damage = function (value) {
+   Phaser.Sprite.prototype.damage.call(this,value);
+    
+    
+};
 
 Mobile.prototype.kill = function () {
     var self = this;

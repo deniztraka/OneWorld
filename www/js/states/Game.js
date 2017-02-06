@@ -45,7 +45,7 @@ BasicGame.Game.prototype = {
         this.baci = new Baci(this.game,this.game.width/2, this.game.height-75);
         // this.game.enemyGroup.add(skeleton);
 
-        game.time.events.repeat(Phaser.Timer.SECOND * 2, 2, function(){
+        game.time.events.repeat(Phaser.Timer.SECOND * 2, 10, function(){
             var darkOne = new DarkOne(self.game,self.rnd.integerInRange(0,self.game.width),10 );
             self.game.enemyGroup.add(darkOne);
             darkOne.target = self.player;
@@ -54,8 +54,9 @@ BasicGame.Game.prototype = {
 
     update: function () {
         //	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!        
-        //this.game.time.totalElapsedSeconds()>
         
+        //game.physics.arcade.collide(this.game.enemyGroup);
+        this.game.enemyGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     },
 
     render: function () {

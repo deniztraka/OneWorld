@@ -33,7 +33,9 @@ function Mobile(game, x, y, texture) {
     this.target = null;
     this.seekSlowingDistance = 100;
     this.seekStopDistance = 30;
-    this.fleeMinHealth = 10;
+    this.fleeMinHealth = 25;
+
+    this.nextHealthTime = 0;
 }
 
 Mobile.prototype = Object.create(Phaser.Sprite.prototype);
@@ -51,12 +53,12 @@ Mobile.prototype.attack = function () {
             if (i == 0) {
                 this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - 15, this.position.y - this.attackDistance + 10);
             } else
-            if (i == 1) {
-                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y - this.attackDistance + 10);
-            } else
-            if (i == 2) {
-                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y - this.attackDistance + 10);
-            }
+                if (i == 1) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y - this.attackDistance + 10);
+                } else
+                    if (i == 2) {
+                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y - this.attackDistance + 10);
+                    }
         }
         //this.line = new Phaser.Line(this.position.x, this.position.y, this.position.x, this.position.y - this.attackDistance);
     } else if (this.directionDegree > -60 && this.directionDegree < 60) {
@@ -65,12 +67,12 @@ Mobile.prototype.attack = function () {
             if (i == 0) {
                 this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y - 15 + 10);
             } else
-            if (i == 1) {
-                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 10);
-            } else
-            if (i == 2) {
-                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 15 + 10);
-            }
+                if (i == 1) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 10);
+                } else
+                    if (i == 2) {
+                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 15 + 10);
+                    }
         }
     } else if (this.directionDegree > 60 && this.directionDegree < 120) {
         console.log("downSlash");
@@ -78,12 +80,12 @@ Mobile.prototype.attack = function () {
             if (i == 0) {
                 this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - 15, this.position.y + this.attackDistance + 10);
             } else
-            if (i == 1) {
-                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y + this.attackDistance + 10);
-            } else
-            if (i == 2) {
-                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y + this.attackDistance + 10);
-            }
+                if (i == 1) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y + this.attackDistance + 10);
+                } else
+                    if (i == 2) {
+                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y + this.attackDistance + 10);
+                    }
         }
     } else {
         console.log("leftSlash");
@@ -91,12 +93,12 @@ Mobile.prototype.attack = function () {
             if (i == 0) {
                 this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y - 15 + 10);
             } else
-            if (i == 1) {
-                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 10);
-            } else
-            if (i == 2) {
-                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 15 + 10);
-            }
+                if (i == 1) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 10);
+                } else
+                    if (i == 2) {
+                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 15 + 10);
+                    }
         }
     }
 
@@ -164,6 +166,8 @@ Mobile.prototype.update = function () {
         return;
     }
 
+    
+
 
 
     //Movement, animation according to movement direction/angle or attacking mode
@@ -209,7 +213,7 @@ Mobile.prototype.update = function () {
 };
 
 Mobile.prototype.seek = function () {
-    if (this.target) {        
+    if (this.target) {
 
         var velocity = Phaser.Point.normalize(Phaser.Point.subtract(this.target.body.position, this.body.position));
 

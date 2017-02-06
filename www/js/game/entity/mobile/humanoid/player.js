@@ -1,6 +1,7 @@
 function Player(game, x, y) {
     Humanoid.call(this, game, x, y, "player");
 
+    this.name = "Player";
     // this.body.setSize(32, 32, 15, 15);
     this.body.collideWorldBounds=true;
     

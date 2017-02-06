@@ -1,5 +1,6 @@
 function Baci(game, x, y) {
     Humanoid.call(this, game, x, y, "baci");
+    this.name = "Bacı";
 
    
     this.myHealthBar = new HealthBar(game, {

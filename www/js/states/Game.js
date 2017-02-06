@@ -30,6 +30,7 @@ BasicGame.Game = function (game) {
 BasicGame.Game.prototype = {
 
     create: function () {
+        var self = this;
         this.debugMode = false;
         var map = this.game.add.tilemap('map');
 
@@ -44,11 +45,16 @@ BasicGame.Game.prototype = {
         this.baci = new Baci(this.game,this.game.width/2, this.game.height-75);
         // this.game.enemyGroup.add(skeleton);
 
-        	
+        game.time.events.repeat(Phaser.Timer.SECOND * 2, 2, function(){
+            var darkOne = new DarkOne(self.game,self.rnd.integerInRange(0,self.game.width),10 );
+            self.game.enemyGroup.add(darkOne);
+            darkOne.target = self.player;
+        }, this);	
     },
 
     update: function () {
         //	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!        
+        //this.game.time.totalElapsedSeconds()>
         
     },
 

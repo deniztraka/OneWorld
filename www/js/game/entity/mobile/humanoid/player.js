@@ -24,11 +24,12 @@ function Player(game, x, y) {
     this.myHealthBar.setFixedToCamera(true);
    
     // Adding attack button
-    var attackButton = game.add.button(this.game.width - 125, this.game.height - 114, 'button', function () {
+    var attackButton = game.add.button(this.game.width - 138, this.game.height - 130, 'button', function () {
         this.velocityXBeforeAttack = this.body.velocity.x;
         this.velocityYBeforeAttack = this.body.velocity.y;
         this.isAttacking = true;
     }, this, 2, 1, 0);
+    attackButton.scale = new Phaser.Point(1.25,1.25);
     // Creating movement joystick
     this.joyStick = game.plugins.add(Phaser.Plugin.JoyStick);
     this.joyStick.create(75, this.game.height - 64);

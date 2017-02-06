@@ -25,10 +25,15 @@ function Mobile(game, x, y, texture) {
     this.isAttacking = false;
     this.isAttackedOnce = false;
     this.attackDistance = 30;
-    this.attackDamage = 10;    
+    this.attackDamage = 10;
     this.lines = new Array(3);
     this.velocityXBeforeAttack = 0;
-    this.velocityYBeforeAttack = 0;    
+    this.velocityYBeforeAttack = 0;
+
+    this.target = null;
+    this.seekSlowingDistance = 100;
+    this.seekStopDistance = 30;
+    this.fleeMinHealth = 10;
 }
 
 Mobile.prototype = Object.create(Phaser.Sprite.prototype);
@@ -36,8 +41,8 @@ Mobile.prototype.constructor = Mobile;
 
 Mobile.prototype.attack = function () {
     console.log("attacked");
-    var self = this;    
-    
+    var self = this;
+
     //fireing 3 rays according to direction
     if (this.directionDegree > -120 && this.directionDegree < -60) {
         //this.play("upSlash");
@@ -101,23 +106,27 @@ Mobile.prototype.attack = function () {
         //get ray coordinats
         var coords = this.lines[i].coordinatesOnLine();
 
+        var damageGiven = false;
         //looping through every enemy in the game
         this.game.enemyGroup.forEachAlive(function (enemy) {
 
-            //looping through cordinats
-            for (var i = Math.round(coords.length/2); i < coords.length; i++) {
+            if (!damageGiven) {
+                //looping through cordinats
+                for (var i = Math.round(coords.length / 2); i < coords.length; i++) {
 
-                //if a coordinat in that ray hits the enemy.
-                if (enemy.body.hitTest(coords[i][0], coords[i][1])) {
-                    enemyFound = true;
-                    break;
+                    //if a coordinat in that ray hits the enemy.
+                    if (enemy.body.hitTest(coords[i][0], coords[i][1])) {
+                        enemyFound = true;
+                        break;
+                    }
                 }
-            }
-            // if enemy found give damage and break the loops
-            if (enemyFound) {
-                enemy.damage(self.attackDamage);
-                enemy.tint = Math.random() * 0xffffff;
-                console.log("damage given");
+                // if enemy found give damage and break the loops
+                if (enemyFound) {
+                    enemy.damage(self.attackDamage);
+                    enemy.tint = Math.random() * 0xffffff;
+                    console.log("damage given");
+                    damageGiven = true;
+                }
             }
         });
         if (enemyFound) {
@@ -127,9 +136,9 @@ Mobile.prototype.attack = function () {
 }
 
 Mobile.prototype.damage = function (value) {
-   Phaser.Sprite.prototype.damage.call(this,value);
-    
-    
+    Phaser.Sprite.prototype.damage.call(this, value);
+
+
 };
 
 Mobile.prototype.kill = function () {
@@ -197,4 +206,53 @@ Mobile.prototype.update = function () {
 
 
     this.body.velocity.set(0);
+};
+
+Mobile.prototype.seek = function () {
+    if (this.target) {        
+
+        var velocity = Phaser.Point.normalize(Phaser.Point.subtract(this.target.body.position, this.body.position));
+
+
+        var distance = Phaser.Point.distance(this.body.position, this.target.body.position);
+        if (distance < this.seekSlowingDistance && distance > this.seekStopDistance) {
+            velocity.x = velocity.x * this.movementSpeed * (distance / 100);
+            velocity.y = velocity.y * this.movementSpeed * (distance / 100);
+        } else if (distance < this.seekStopDistance) {
+            velocity.x = 0;
+            velocity.y = 0;
+        } else {
+            velocity.x = velocity.x * this.movementSpeed;
+            velocity.y = velocity.y * this.movementSpeed;
+        }
+        var desiredVelocity = velocity;
+
+        // var steering = Phaser.Point.subtract(desiredVelocity, this.body.velocity);
+        // var resultingVelocity = Phaser.Point.add(desiredVelocity, steering);
+        // var normalizedResultingVelocity = Phaser.Point.normalize(resultingVelocity);
+        // resultingVelocity.x = normalizedResultingVelocity.x * this.movementSpeed;
+        // resultingVelocity.y = normalizedResultingVelocity.y * this.movementSpeed;
+        //this.body.velocity = resultingVelocity;
+        this.body.velocity = velocity;
+    }
+
+};
+
+Mobile.prototype.flee = function () {
+    if (this.target) {
+        var velocity = Phaser.Point.normalize(Phaser.Point.subtract(this.target.body.position, this.body.position));
+        velocity.x = velocity.x * this.movementSpeed;
+        velocity.y = velocity.y * this.movementSpeed;
+        var desiredVelocity = velocity;
+        desiredVelocity.x = -desiredVelocity.x;
+        desiredVelocity.y = -desiredVelocity.y;
+
+        // var steering = Phaser.Point.subtract(desiredVelocity, this.body.velocity);
+        // var resultingVelocity = Phaser.Point.add(desiredVelocity, steering);
+        // var normalizedResultingVelocity = Phaser.Point.normalize(resultingVelocity);
+        // resultingVelocity.x = normalizedResultingVelocity.x * this.movementSpeed;
+        // resultingVelocity.y = normalizedResultingVelocity.y * this.movementSpeed;
+        // this.body.velocity = resultingVelocity;
+        this.body.velocity = desiredVelocity;
+    }
 };

@@ -2,6 +2,7 @@ function Player(game, x, y) {
     Humanoid.call(this, game, x, y, "player");
 
     this.name = "Player";
+    this.attackDamage = 35;
     // this.body.setSize(32, 32, 15, 15);
     this.body.collideWorldBounds=true;
     
@@ -49,9 +50,6 @@ function Player(game, x, y) {
         s:game.input.keyboard.addKey(Phaser.Keyboard.S),
         d:game.input.keyboard.addKey(Phaser.Keyboard.D)
     }
-    
-
-    
 };
 
 Player.prototype = Object.create(Humanoid.prototype);

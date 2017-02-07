@@ -45,7 +45,7 @@ BasicGame.Game.prototype = {
         this.baci = new Baci(this.game,this.game.width/2, this.game.height-75);
         // this.game.enemyGroup.add(skeleton);
 
-        game.time.events.repeat(Phaser.Timer.SECOND * 2, 10, function(){
+        game.time.events.repeat(Phaser.Timer.SECOND * 2, 5, function(){
             var darkOne = new DarkOne(self.game,self.rnd.integerInRange(0,self.game.width),10 );
             self.game.enemyGroup.add(darkOne);
             darkOne.target = self.player;

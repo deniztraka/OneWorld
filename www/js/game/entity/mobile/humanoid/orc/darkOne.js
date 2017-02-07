@@ -4,13 +4,48 @@ function DarkOne(game, x, y) {
     this.nextCheckTime = 0;
     this.checkForEnemyFromSeconds = 1;
     this.attackDamage = 2;
+
+    this.myHealthBar = new HealthBar(game, {
+        x: x,
+        y: y - 30,
+        width: 30,
+        height: 5,
+        bg: {
+            color: '#2b2b2b'
+        },
+        bar: {
+            color: '#6c0707'
+        },
+        flipped: false
+    });
+    //this.addChild(this.myHealthBar);
 };
 
 DarkOne.prototype = Object.create(Humanoid.prototype);
 DarkOne.prototype.constructor = DarkOne;
 
+DarkOne.prototype.damage = function (value) {
+    Humanoid.prototype.damage.call(this, value);
+    if (this.alive) {
+        this.game.add.tween(this).to({
+            tint: 0xff0000,
+        }, 50, Phaser.Easing.Exponential.Out, true, 0, 0, true);
+        this.myHealthBar.setPercent(this.health - value / 100);
+    }
+};
+
+DarkOne.prototype.kill = function () {
+    Humanoid.prototype.kill.call(this);
+
+    this.myHealthBar.kill();
+};
+
 DarkOne.prototype.update = function () {
     Humanoid.prototype.update.call(this);
+    if (this.myHealthBar) {
+        this.myHealthBar.setPosition(this.body.position.x + 15, this.body.position.y - 10);
+    }
+
 
     //Check target. player or baci?
     if (this.game.time.now > this.nextCheckTime) {
@@ -49,14 +84,14 @@ DarkOne.prototype.update = function () {
                     this.health++;
                 }
                 this.nextHealthTime = this.game.time.totalElapsedSeconds() * 1000 + 2000;
-                console.log(this.health);
+
             }
         }
     }
 };
 
 DarkOne.prototype.attack = function () {
-    console.log("attacked");
+
     var self = this;
 
     if (self.target) {
@@ -64,57 +99,57 @@ DarkOne.prototype.attack = function () {
         //fireing 3 rays according to direction
         if (this.directionDegree > -120 && this.directionDegree < -60) {
             //this.play("upSlash");
-            console.log("upSlash");
+
             for (var i = 0; i < this.lines.length; i++) {
                 if (i == 0) {
                     this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - 15, this.position.y - this.attackDistance + 10);
                 } else
-                    if (i == 1) {
-                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y - this.attackDistance + 10);
-                    } else
-                        if (i == 2) {
-                            this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y - this.attackDistance + 10);
-                        }
+                if (i == 1) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y - this.attackDistance + 10);
+                } else
+                if (i == 2) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y - this.attackDistance + 10);
+                }
             }
             //this.line = new Phaser.Line(this.position.x, this.position.y, this.position.x, this.position.y - this.attackDistance);
         } else if (this.directionDegree > -60 && this.directionDegree < 60) {
-            console.log("rightSlash");
+
             for (var i = 0; i < this.lines.length; i++) {
                 if (i == 0) {
                     this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y - 15 + 10);
                 } else
-                    if (i == 1) {
-                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 10);
-                    } else
-                        if (i == 2) {
-                            this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 15 + 10);
-                        }
+                if (i == 1) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 10);
+                } else
+                if (i == 2) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 15 + 10);
+                }
             }
         } else if (this.directionDegree > 60 && this.directionDegree < 120) {
-            console.log("downSlash");
+
             for (var i = 0; i < this.lines.length; i++) {
                 if (i == 0) {
                     this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - 15, this.position.y + this.attackDistance + 10);
                 } else
-                    if (i == 1) {
-                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y + this.attackDistance + 10);
-                    } else
-                        if (i == 2) {
-                            this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y + this.attackDistance + 10);
-                        }
+                if (i == 1) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y + this.attackDistance + 10);
+                } else
+                if (i == 2) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y + this.attackDistance + 10);
+                }
             }
         } else {
-            console.log("leftSlash");
+
             for (var i = 0; i < this.lines.length; i++) {
                 if (i == 0) {
                     this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y - 15 + 10);
                 } else
-                    if (i == 1) {
-                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 10);
-                    } else
-                        if (i == 2) {
-                            this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 15 + 10);
-                        }
+                if (i == 1) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 10);
+                } else
+                if (i == 2) {
+                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 15 + 10);
+                }
             }
         }
 
@@ -138,7 +173,7 @@ DarkOne.prototype.attack = function () {
             // if enemy found give damage and break the loops
             if (enemyFound) {
                 this.target.damage(self.attackDamage);
-                console.log("damage given by darkone");
+
             }
 
             if (enemyFound) {

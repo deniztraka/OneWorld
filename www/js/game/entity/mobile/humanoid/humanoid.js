@@ -15,3 +15,7 @@ Humanoid.prototype.damage = function (value) {
     
     
 };
+
+Humanoid.prototype.kill = function () {
+    Mobile.prototype.kill.call(this);
+};

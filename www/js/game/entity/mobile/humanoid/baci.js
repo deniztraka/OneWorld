@@ -1,7 +1,7 @@
 function Baci(game, x, y) {
     Humanoid.call(this, game, x, y, "baci");
     this.name = "Bacı";
-
+    this.lastSpeechTime = 0;
    
     this.myHealthBar = new HealthBar(game, {
         x: game.width - 245,
@@ -25,6 +25,10 @@ Baci.prototype.constructor = Baci;
 Baci.prototype.update = function () {
     Humanoid.prototype.update.call(this);
 
+     if (Math.random() < 0.01 && this.lastSpeechTime + 3000 < this.game.time.now) {
+            this.say("imdak!");
+            this.lastSpeechTime = this.game.time.now;
+        }
     
 };
 

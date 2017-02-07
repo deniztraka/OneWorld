@@ -41,64 +41,63 @@ function Mobile(game, x, y, texture) {
 Mobile.prototype = Object.create(Phaser.Sprite.prototype);
 Mobile.prototype.constructor = Mobile;
 
+Mobile.prototype.say = function (message) {
+    this.game.world.add(new SpeechBubble(this.game, this.x, this.y, null, this, message));
+}
+
 Mobile.prototype.attack = function () {
-    console.log("attacked");
     var self = this;
 
     //fireing 3 rays according to direction
     if (this.directionDegree > -120 && this.directionDegree < -60) {
-        //this.play("upSlash");
-        console.log("upSlash");
+        //this.play("upSlash");        
         for (var i = 0; i < this.lines.length; i++) {
             if (i == 0) {
                 this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - 15, this.position.y - this.attackDistance + 10);
             } else
-                if (i == 1) {
-                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y - this.attackDistance + 10);
-                } else
-                    if (i == 2) {
-                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y - this.attackDistance + 10);
-                    }
+            if (i == 1) {
+                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y - this.attackDistance + 10);
+            } else
+            if (i == 2) {
+                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y - this.attackDistance + 10);
+            }
         }
         //this.line = new Phaser.Line(this.position.x, this.position.y, this.position.x, this.position.y - this.attackDistance);
     } else if (this.directionDegree > -60 && this.directionDegree < 60) {
-        console.log("rightSlash");
         for (var i = 0; i < this.lines.length; i++) {
             if (i == 0) {
                 this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y - 15 + 10);
             } else
-                if (i == 1) {
-                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 10);
-                } else
-                    if (i == 2) {
-                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 15 + 10);
-                    }
+            if (i == 1) {
+                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 10);
+            } else
+            if (i == 2) {
+                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + this.attackDistance, this.position.y + 15 + 10);
+            }
         }
     } else if (this.directionDegree > 60 && this.directionDegree < 120) {
-        console.log("downSlash");
         for (var i = 0; i < this.lines.length; i++) {
             if (i == 0) {
                 this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - 15, this.position.y + this.attackDistance + 10);
             } else
-                if (i == 1) {
-                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y + this.attackDistance + 10);
-                } else
-                    if (i == 2) {
-                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y + this.attackDistance + 10);
-                    }
+            if (i == 1) {
+                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x, this.position.y + this.attackDistance + 10);
+            } else
+            if (i == 2) {
+                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x + 15, this.position.y + this.attackDistance + 10);
+            }
         }
     } else {
-        console.log("leftSlash");
         for (var i = 0; i < this.lines.length; i++) {
             if (i == 0) {
                 this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y - 15 + 10);
             } else
-                if (i == 1) {
-                    this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 10);
-                } else
-                    if (i == 2) {
-                        this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 15 + 10);
-                    }
+            if (i == 1) {
+                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 10);
+            } else
+            if (i == 2) {
+                this.lines[i] = new Phaser.Line(this.position.x, this.position.y + 10, this.position.x - this.attackDistance, this.position.y + 15 + 10);
+            }
         }
     }
 
@@ -125,8 +124,6 @@ Mobile.prototype.attack = function () {
                 // if enemy found give damage and break the loops
                 if (enemyFound) {
                     enemy.damage(self.attackDamage);
-                    enemy.tint = Math.random() * 0xffffff;
-                    console.log("damage given");
                     damageGiven = true;
                 }
             }
@@ -166,7 +163,7 @@ Mobile.prototype.update = function () {
         return;
     }
 
-    
+
 
 
 

@@ -30,8 +30,10 @@ BasicGame.Game = function (game) {
 BasicGame.Game.prototype = {
 
     create: function () {
+        this.game.time.advancedTiming = true;
+
         var self = this;
-        this.debugMode = false;
+        this.debugMode = true;
         var map = this.game.add.tilemap('map');
 
         map.addTilesetImage('grass');
@@ -44,12 +46,19 @@ BasicGame.Game.prototype = {
         // skeleton = new Skeleton(this.game, 280, 280);
         this.baci = new Baci(this.game,this.game.width/2, this.game.height-75);
         // this.game.enemyGroup.add(skeleton);
+        this.baci.target = this.player;
 
-        game.time.events.repeat(Phaser.Timer.SECOND * 2, 5, function(){
-            var darkOne = new DarkOne(self.game,self.rnd.integerInRange(0,self.game.width),10 );
-            self.game.enemyGroup.add(darkOne);
-            darkOne.target = self.player;
-        }, this);	
+        // game.time.events.repeat(Phaser.Timer.SECOND * 2, 1, function(){
+        //     var darkOne = new DarkOne(self.game,self.rnd.integerInRange(0,self.game.width),10 );
+        //     self.game.enemyGroup.add(darkOne);
+        //     darkOne.target = self.player;
+        // }, this);	
+
+        // In order to have the camera move, we need to increase the size of our world bounds.
+        this.game.world.setBounds(0, 0, 3200, 3200);
+
+        // Make the camera follow the player.
+        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
     },
 
     update: function () {
@@ -61,22 +70,19 @@ BasicGame.Game.prototype = {
 
     render: function () {
         if (this.debugMode) {
-            if (skeleton) {
-                this.game.debug.geom(skeleton.line);
-                //this.game.debug.spriteBounds(skeleton);                
-                //game.debug.geom( skeleton.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
-            }
-            if (this.player) {
+            this.game.debug.text(this.game.time.fps || '--', 2, 14, "#a7aebe");
+            
+            //if (this.player) {
                 //this.game.debug.geom(player.line);
-                if (this.player.lines) {
-                    for (var i = 0; i < this.player.lines.length; i++) {
-                        this.game.debug.geom(this.player.lines[i]);
-                    }
-                }
+                // if (this.player.lines) {
+                //     for (var i = 0; i < this.player.lines.length; i++) {
+                //         this.game.debug.geom(this.player.lines[i]);
+                //     }
+                // }
                 //this.game.debug.spriteBounds(player);
-                this.game.debug.spriteInfo(this.player, 32, 32);
+                //this.game.debug.spriteInfo(this.player, 32, 32);
                 //game.debug.geom( player.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
-            }
+            //}
         }
     },
 

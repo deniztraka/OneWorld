@@ -32,6 +32,7 @@ function Player(game, x, y) {
         this.isAttacking = true;
     }, this, 2, 1, 0);
     attackButton.scale = new Phaser.Point(1.25,1.25);
+    attackButton.fixedToCamera = true;
     // Creating movement joystick
     this.joyStick = game.plugins.add(Phaser.Plugin.JoyStick);
     this.joyStick.create(75, this.game.height - 64);
@@ -57,9 +58,7 @@ Player.prototype.constructor = Player;
 
 Player.prototype.damage = function (value) {
     Humanoid.prototype.damage.call(this,value);
-    if(this.alive){
-        this.myHealthBar.setPercent(this.health-value/100);
-    }
+        
 };
 
 Player.prototype.update = function () {
@@ -90,6 +89,5 @@ Player.prototype.update = function () {
             this.velocityYBeforeAttack = this.body.velocity.y;
             this.isAttacking = true;
         }
-    }
-    //console.log(Math.atan2(this.body.velocity.y,this.body.velocity.x) * (180 / Math.PI));
+    }    
 };

@@ -31,7 +31,8 @@ BasicGame.Preloader.prototype = {
 		//	You can find all of these assets in the Phaser Examples repository
 
 		this.load.image('grass', 'assets/images/spritesheets/tilesets/grass.png');
-		this.load.tilemap('map', 'assets/images/spritesheets/tilesets/grassRandom.json', null, Phaser.Tilemap.TILED_JSON);
+		//this.load.tilemap('map', 'assets/images/spritesheets/tilesets/grassRandom.json', null, Phaser.Tilemap.TILED_JSON);
+		this.load.tilemap('map', 'assets/images/spritesheets/tilesets/baci.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.image('dirt', 'assets/images/dirt.png');
 		this.load.image('vjoy_base', 'assets/images/libs/vjoy/base.png');
         this.load.image('vjoy_body', 'assets/images/libs/vjoy/body.png');

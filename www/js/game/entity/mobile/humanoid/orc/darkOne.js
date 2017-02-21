@@ -26,12 +26,7 @@ DarkOne.prototype.constructor = DarkOne;
 
 DarkOne.prototype.damage = function (value) {
     Humanoid.prototype.damage.call(this, value);
-    if (this.alive) {
-        this.game.add.tween(this).to({
-            tint: 0xff0000,
-        }, 50, Phaser.Easing.Exponential.Out, true, 0, 0, true);
-        this.myHealthBar.setPercent(this.health - value / 100);
-    }
+    
 };
 
 DarkOne.prototype.kill = function () {
@@ -77,16 +72,7 @@ DarkOne.prototype.update = function () {
 
         }
 
-        if (!this.isAttacking) {
-            //Check target. player or baci?
-            if (this.game.time.now > this.nextHealthTime) {
-                if (this.health < 100) {
-                    this.health++;
-                }
-                this.nextHealthTime = this.game.time.totalElapsedSeconds() * 1000 + 2000;
-
-            }
-        }
+        
     }
 };
 

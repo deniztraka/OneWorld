@@ -19,8 +19,10 @@ function Mobile(game, x, y, texture) {
 
     this.animations.add('die', [20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5], 10, false);
 
+    this.startingMovementSpeed = 45;
     this.movementSpeed = 45;
     this.health = 100;
+    this.maxHealth = 100;
     this.directionDegree = 0;
     this.isAttacking = false;
     this.isAttackedOnce = false;
@@ -36,6 +38,9 @@ function Mobile(game, x, y, texture) {
     this.fleeMinHealth = 25;
 
     this.nextHealthTime = 0;
+    this.oldTint = this.tint;
+
+    this.behaviour = "";
 }
 
 Mobile.prototype = Object.create(Phaser.Sprite.prototype);
@@ -136,8 +141,15 @@ Mobile.prototype.attack = function () {
 
 Mobile.prototype.damage = function (value) {
     Phaser.Sprite.prototype.damage.call(this, value);
-
-
+    if (this.alive) {
+        var tween = this.game.add.tween(this).to({
+            tint: 0xff0000,
+        }, 50, Phaser.Easing.Exponential.Out, true, 0, 0, true);
+        tween.onComplete.add(function () {
+            this.tint = this.oldTint;
+        }, this);
+        this.myHealthBar.setPercent(this.health - value / 100);
+    }
 };
 
 Mobile.prototype.kill = function () {
@@ -160,12 +172,15 @@ Mobile.prototype.update = function () {
     var self = this;
 
     if (!this.alive) {
+        this.body.velocity.set(0);
         return;
     }
 
-
-
-
+    if (this.behaviour != "flee") {
+        this.movementSpeed = this.health / this.maxHealth * this.startingMovementSpeed;
+    } else if (this.behaviour == "flee") {
+        this.movementSpeed = this.startingMovementSpeed;
+    }
 
     //Movement, animation according to movement direction/angle or attacking mode
     if (!this.isAttacking) {
@@ -204,7 +219,15 @@ Mobile.prototype.update = function () {
         }, this);
     }
 
+    if (!this.isAttacking) {        
+        if (this.game.time.now > this.nextHealthTime) {
+            if (this.health < this.maxHealth) {
+                this.health++;
+            }
+            this.nextHealthTime = this.game.time.totalElapsedSeconds() * 1000 + 2000;
 
+        }
+    }
 
     this.body.velocity.set(0);
 };
@@ -226,16 +249,9 @@ Mobile.prototype.seek = function () {
             velocity.x = velocity.x * this.movementSpeed;
             velocity.y = velocity.y * this.movementSpeed;
         }
-        var desiredVelocity = velocity;
-
-        // var steering = Phaser.Point.subtract(desiredVelocity, this.body.velocity);
-        // var resultingVelocity = Phaser.Point.add(desiredVelocity, steering);
-        // var normalizedResultingVelocity = Phaser.Point.normalize(resultingVelocity);
-        // resultingVelocity.x = normalizedResultingVelocity.x * this.movementSpeed;
-        // resultingVelocity.y = normalizedResultingVelocity.y * this.movementSpeed;
-        //this.body.velocity = resultingVelocity;
         this.body.velocity = velocity;
     }
+    this.behaviour = "seek";
 
 };
 
@@ -248,12 +264,7 @@ Mobile.prototype.flee = function () {
         desiredVelocity.x = -desiredVelocity.x;
         desiredVelocity.y = -desiredVelocity.y;
 
-        // var steering = Phaser.Point.subtract(desiredVelocity, this.body.velocity);
-        // var resultingVelocity = Phaser.Point.add(desiredVelocity, steering);
-        // var normalizedResultingVelocity = Phaser.Point.normalize(resultingVelocity);
-        // resultingVelocity.x = normalizedResultingVelocity.x * this.movementSpeed;
-        // resultingVelocity.y = normalizedResultingVelocity.y * this.movementSpeed;
-        // this.body.velocity = resultingVelocity;
         this.body.velocity = desiredVelocity;
     }
+    this.behaviour = "flee";
 };

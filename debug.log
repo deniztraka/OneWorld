@@ -10,3 +10,5 @@
 [0202/131310:WARNING:in_range_cast.h(38)] value 1294629019648 out of range
 [0202/131310:WARNING:in_range_cast.h(38)] value 1294629015128 out of range
 [0203/151129:ERROR:file_io.cc(30)] read: expected 36, observed 0
+[0220/231324.508:ERROR:settings.cc(261)] Settings magic is not 1129342067
+[0221/104738.745:ERROR:file_io.cc(30)] read: expected 36, observed 0

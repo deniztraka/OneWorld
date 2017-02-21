@@ -2,7 +2,10 @@ function Baci(game, x, y) {
     Humanoid.call(this, game, x, y, "baci");
     this.name = "Bacı";
     this.lastSpeechTime = 0;
-   
+    this.standPosX = x;
+    this.standPosY = y;
+    this.body.velocity.x = 10;
+
     this.myHealthBar = new HealthBar(game, {
         x: game.width - 245,
         y: game.height - 17,
@@ -24,18 +27,26 @@ Baci.prototype.constructor = Baci;
 
 Baci.prototype.update = function () {
     Humanoid.prototype.update.call(this);
+    // this.body.position.x = this.standPosX;
+    // this.body.position.x = this.standPosY;
 
-     if (Math.random() < 0.01 && this.lastSpeechTime + 3000 < this.game.time.now) {
-            this.say("imdak!");
-            this.lastSpeechTime = this.game.time.now;
-        }
+    if (Math.random() < 0.01 && this.lastSpeechTime + 3000 < this.game.time.now) {
+        this.say("imdak!");
+
+        this.lastSpeechTime = this.game.time.now;
+    }
+
+    if (this.target) {
+        this.seek();
+    }
+
     
 };
 
 Baci.prototype.damage = function (value) {
-    Humanoid.prototype.damage.call(this,value);
-    if(this.alive){
-        this.myHealthBar.setPercent(this.health-value/100);
+    Humanoid.prototype.damage.call(this, value);
+    if (this.alive) {
+        this.myHealthBar.setPercent(this.health - value / 100);
     }
 };
 

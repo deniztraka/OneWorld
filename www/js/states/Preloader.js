@@ -31,6 +31,8 @@ BasicGame.Preloader.prototype = {
 		//	You can find all of these assets in the Phaser Examples repository
 
 		this.load.image('grass', 'assets/images/spritesheets/tilesets/grass.png');
+		this.load.image('treetop', 'assets/images/spritesheets/tilesets/treetop.png');
+		this.load.image('trunk', 'assets/images/spritesheets/tilesets/trunk.png');
 		//this.load.tilemap('map', 'assets/images/spritesheets/tilesets/grassRandom.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.tilemap('map', 'assets/images/spritesheets/tilesets/baci.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.image('dirt', 'assets/images/dirt.png');
@@ -45,6 +47,8 @@ BasicGame.Preloader.prototype = {
 		this.load.spritesheet('dayi', 'assets/images/spritesheets/enemy/dayi.png', 64, 64);
 		this.load.spritesheet('skeleton', 'assets/images/spritesheets/enemy/skeleton.png', 64, 64);
 		game.load.spritesheet('button', 'assets/images/spritesheets/buttonSpriteSheet.png', 100, 100);
+		game.load.image('stop', 'assets/images/stop.png');
+		game.load.image('follow', 'assets/images/follow.png');
 
 		this.load.spritesheet('bubble-border', 'assets/images/spritesheets/speech.png', 9, 9);
 		this.load.image('bubble-tail', 'assets/images/spritesheets/bubbleTrail.png');

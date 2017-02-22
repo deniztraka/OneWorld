@@ -19,6 +19,8 @@ function Mobile(game, x, y, texture) {
 
     this.animations.add('die', [20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5], 10, false);
 
+    this.isEnemy = false;
+
     this.startingMovementSpeed = 45;
     this.movementSpeed = 45;
     this.health = 100;
@@ -113,9 +115,14 @@ Mobile.prototype.attack = function () {
         var coords = this.lines[i].coordinatesOnLine();
 
         var damageGiven = false;
-        //looping through every enemy in the game
-        this.game.enemyGroup.forEachAlive(function (enemy) {
 
+        //looping through every enemy in the game
+        var enemyArraySet = this.game.entityGroup.filter(function (child, index, children) {
+            return child.isEnemy;
+        }, true);
+
+        for(var i = 0; i<enemyArraySet.list.length;i++){
+            var enemy = enemyArraySet.list[i];
             if (!damageGiven) {
                 //looping through cordinats
                 for (var i = Math.round(coords.length / 2); i < coords.length; i++) {
@@ -132,7 +139,8 @@ Mobile.prototype.attack = function () {
                     damageGiven = true;
                 }
             }
-        });
+        }
+
         if (enemyFound) {
             break;
         }
@@ -147,8 +155,7 @@ Mobile.prototype.damage = function (value) {
         }, 50, Phaser.Easing.Exponential.Out, true, 0, 0, true);
         tween.onComplete.add(function () {
             this.tint = this.oldTint;
-        }, this);
-        this.myHealthBar.setPercent(this.health - value / 100);
+        }, this);        
     }
 };
 
@@ -201,7 +208,6 @@ Mobile.prototype.update = function () {
             this.play("left");
         }
     } else if (!this.isAttackedOnce) {
-
         if (this.directionDegree > -120 && this.directionDegree < -60) {
             this.play("upSlash");
         } else if (this.directionDegree > -60 && this.directionDegree < 60) {
@@ -211,6 +217,7 @@ Mobile.prototype.update = function () {
         } else {
             this.play("leftSlash");
         }
+
         this.isAttackedOnce = true;
         this.animations.currentAnim.onComplete.addOnce(function () {
             self.attack();
@@ -219,24 +226,22 @@ Mobile.prototype.update = function () {
         }, this);
     }
 
-    if (!this.isAttacking) {        
+    if (!this.isAttacking) {
         if (this.game.time.now > this.nextHealthTime) {
             if (this.health < this.maxHealth) {
-                this.health++;
+                this.health++;                
             }
             this.nextHealthTime = this.game.time.totalElapsedSeconds() * 1000 + 2000;
-
         }
     }
 
+    this.myHealthBar.setPercent(this.health / this.maxHealth * 100);
     this.body.velocity.set(0);
 };
 
 Mobile.prototype.seek = function () {
     if (this.target) {
-
         var velocity = Phaser.Point.normalize(Phaser.Point.subtract(this.target.body.position, this.body.position));
-
 
         var distance = Phaser.Point.distance(this.body.position, this.target.body.position);
         if (distance < this.seekSlowingDistance && distance > this.seekStopDistance) {
@@ -252,7 +257,6 @@ Mobile.prototype.seek = function () {
         this.body.velocity = velocity;
     }
     this.behaviour = "seek";
-
 };
 
 Mobile.prototype.flee = function () {

@@ -4,6 +4,7 @@ function DarkOne(game, x, y) {
     this.nextCheckTime = 0;
     this.checkForEnemyFromSeconds = 1;
     this.attackDamage = 2;
+    this.isEnemy = true;
 
     this.myHealthBar = new HealthBar(game, {
         x: x,
@@ -44,8 +45,8 @@ DarkOne.prototype.update = function () {
 
     //Check target. player or baci?
     if (this.game.time.now > this.nextCheckTime) {
-        var player = this.game.world.getByName("Player");
-        var baci = this.game.world.getByName("Bacı");
+        var player = this.game.entityGroup.getByName("Player");
+        var baci = this.game.entityGroup.getByName("Bacı");
         var distance = Phaser.Point.distance(this.body.position, player.body.position);
         if (distance < 100) {
             this.target = player;

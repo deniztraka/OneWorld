@@ -4,8 +4,8 @@ function Player(game, x, y) {
     this.name = "Player";
     this.attackDamage = 35;
     // this.body.setSize(32, 32, 15, 15);
-    this.body.collideWorldBounds=true;
-    
+    this.body.collideWorldBounds = true;
+
 
     //Creating UI
     // var bottomUI = game.add.sprite(this.game.width / 2, this.game.height - 135, 'bottomUI');
@@ -22,17 +22,38 @@ function Player(game, x, y) {
         bar: {
             color: '#6c0707'
         },
+        drawText: true,
+        maxHealth: this.maxHealth
     });
     this.myHealthBar.setFixedToCamera(true);
-   
+
     // Adding attack button
     var attackButton = game.add.button(this.game.width - 138, this.game.height - 130, 'button', function () {
         this.velocityXBeforeAttack = this.body.velocity.x;
         this.velocityYBeforeAttack = this.body.velocity.y;
         this.isAttacking = true;
     }, this, 2, 1, 0);
-    attackButton.scale = new Phaser.Point(1.25,1.25);
+    attackButton.scale = new Phaser.Point(1.25, 1.25);
     attackButton.fixedToCamera = true;
+
+    var stopButton = game.add.button(this.game.width - 225, this.game.height - 65, 'stop', function () {
+        var baci = this.game.entityGroup.getByName("Bacı");
+        baci.target = null;
+        followButton.visible = true;
+        stopButton.visible = false;
+    }, this);
+    stopButton.fixedToCamera = true;
+
+    var followButton = game.add.button(this.game.width - 225, this.game.height - 65, 'follow', function () {
+        var baci = this.game.entityGroup.getByName("Bacı");
+        baci.target = this;
+        stopButton.visible = true;
+        followButton.visible = false;
+    }, this);
+    followButton.fixedToCamera = true;
+    followButton.visible = false;
+
+
     // Creating movement joystick
     this.joyStick = game.plugins.add(Phaser.Plugin.JoyStick);
     this.joyStick.create(75, this.game.height - 64);
@@ -44,12 +65,12 @@ function Player(game, x, y) {
     rightUI.fixedToCamera = true;
     rightUI.bringToTop();
 
-    
+
     this.movementKeys = {
-        w:game.input.keyboard.addKey(Phaser.Keyboard.W),
-        a:game.input.keyboard.addKey(Phaser.Keyboard.A),
-        s:game.input.keyboard.addKey(Phaser.Keyboard.S),
-        d:game.input.keyboard.addKey(Phaser.Keyboard.D)
+        w: game.input.keyboard.addKey(Phaser.Keyboard.W),
+        a: game.input.keyboard.addKey(Phaser.Keyboard.A),
+        s: game.input.keyboard.addKey(Phaser.Keyboard.S),
+        d: game.input.keyboard.addKey(Phaser.Keyboard.D)
     }
 };
 
@@ -57,8 +78,8 @@ Player.prototype = Object.create(Humanoid.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.damage = function (value) {
-    Humanoid.prototype.damage.call(this,value);
-        
+    Humanoid.prototype.damage.call(this, value);
+
 };
 
 Player.prototype.update = function () {
@@ -72,7 +93,7 @@ Player.prototype.update = function () {
             this.body.velocity.y = -this.joyStick.speed.y;
         }
 
-        var keyboardCursors = this.game.input.keyboard.createCursorKeys();        
+        var keyboardCursors = this.game.input.keyboard.createCursorKeys();
         if (keyboardCursors.up.isDown || this.movementKeys.w.isDown) {
             this.body.velocity.y = -this.movementSpeed;
         } else if (keyboardCursors.down.isDown || this.movementKeys.s.isDown) {
@@ -89,5 +110,5 @@ Player.prototype.update = function () {
             this.velocityYBeforeAttack = this.body.velocity.y;
             this.isAttacking = true;
         }
-    }    
+    }
 };

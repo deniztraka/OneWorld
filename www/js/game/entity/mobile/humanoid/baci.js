@@ -17,7 +17,9 @@ function Baci(game, x, y) {
         bar: {
             color: '#6c0707'
         },
-        flipped: true
+        flipped: true,
+        drawText: true,
+        maxHealth: this.maxHealth
     });
     this.myHealthBar.setFixedToCamera(true);
 };
@@ -51,5 +53,5 @@ Baci.prototype.damage = function (value) {
 };
 
 Baci.prototype.kill = function (value) {
-    //Finish game here
+    Humanoid.prototype.kill.call(this, value);
 };

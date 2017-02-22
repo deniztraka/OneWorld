@@ -4,7 +4,7 @@ function Mobile(game, x, y, texture) {
     game.add.existing(this);
     game.physics.enable(this, Phaser.Physics.ARCADE);
 
-    this.body.setSize(36, 55, 15, 17);
+    this.body.setSize(20, 29, 20, 35);
     this.anchor.setTo(0.5, 0.5);
 
     this.animations.add('up', [8 * 13, 8 * 13 + 1, 8 * 13 + 2, 8 * 13 + 3, 8 * 13 + 4, 8 * 13 + 5, 8 * 13 + 6, 8 * 13 + 7, 8 * 13 + 8], 10, true);

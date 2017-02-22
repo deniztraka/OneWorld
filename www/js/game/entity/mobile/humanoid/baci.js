@@ -6,6 +6,13 @@ function Baci(game, x, y) {
     this.standPosY = y;
     this.body.velocity.x = 10;
 
+
+};
+
+Baci.prototype = Object.create(Humanoid.prototype);
+Baci.prototype.constructor = Baci;
+
+Baci.prototype.createUI = function () {
     this.myHealthBar = new HealthBar(game, {
         x: game.width - 245,
         y: game.height - 17,
@@ -22,10 +29,8 @@ function Baci(game, x, y) {
         maxHealth: this.maxHealth
     });
     this.myHealthBar.setFixedToCamera(true);
-};
 
-Baci.prototype = Object.create(Humanoid.prototype);
-Baci.prototype.constructor = Baci;
+};
 
 Baci.prototype.update = function () {
     Humanoid.prototype.update.call(this);
@@ -42,7 +47,7 @@ Baci.prototype.update = function () {
         this.seek();
     }
 
-    
+
 };
 
 Baci.prototype.damage = function (value) {

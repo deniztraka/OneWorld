@@ -33,9 +33,13 @@ BasicGame.Preloader.prototype = {
 		this.load.image('grass', 'assets/images/spritesheets/tilesets/grass.png');
 		this.load.image('treetop', 'assets/images/spritesheets/tilesets/treetop.png');
 		this.load.image('trunk', 'assets/images/spritesheets/tilesets/trunk.png');
+		this.load.image('block', 'assets/images/spritesheets/tilesets/block.png');
+		this.load.image('dirt', 'assets/images/spritesheets/tilesets/dirt.png');
+		this.load.image('barrel', 'assets/images/spritesheets/tilesets/barrel.png');
+		this.load.image('buckets', 'assets/images/spritesheets/tilesets/buckets.png');
 		//this.load.tilemap('map', 'assets/images/spritesheets/tilesets/grassRandom.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.tilemap('map', 'assets/images/spritesheets/tilesets/baci.json', null, Phaser.Tilemap.TILED_JSON);
-		this.load.image('dirt', 'assets/images/dirt.png');
+		//this.load.image('dirt', 'assets/images/dirt.png');
 		this.load.image('vjoy_base', 'assets/images/libs/vjoy/base.png');
         this.load.image('vjoy_body', 'assets/images/libs/vjoy/body.png');
         this.load.image('vjoy_cap', 'assets/images/libs/vjoy/cap.png');

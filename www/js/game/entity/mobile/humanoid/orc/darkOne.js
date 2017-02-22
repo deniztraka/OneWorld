@@ -18,8 +18,7 @@ function DarkOne(game, x, y) {
             color: '#6c0707'
         },
         flipped: false
-    });
-    //this.addChild(this.myHealthBar);
+    });    
 };
 
 DarkOne.prototype = Object.create(Humanoid.prototype);
@@ -41,7 +40,6 @@ DarkOne.prototype.update = function () {
     if (this.myHealthBar) {
         this.myHealthBar.setPosition(this.body.position.x + 15, this.body.position.y - 10);
     }
-
 
     //Check target. player or baci?
     if (this.game.time.now > this.nextCheckTime) {

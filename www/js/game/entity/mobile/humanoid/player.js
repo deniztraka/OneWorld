@@ -7,10 +7,35 @@ function Player(game, x, y) {
     this.body.collideWorldBounds = true;
 
 
-    //Creating UI
-    // var bottomUI = game.add.sprite(this.game.width / 2, this.game.height - 135, 'bottomUI');
-    // bottomUI.fixedToCamera = true;
-    //bottomUI.anchor.setTo(0.5, 0.0);
+    
+    
+
+    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    
+    // this.UIGroup = this.game.add.group();    
+    // this.UIGroup.add(stopButton);
+    // this.UIGroup.add(followButton);
+    // this.UIGroup.add(attackButton);
+    // //this.UIGroup.add(this.myHealthBar);
+    // this.UIGroup.add(leftUI);
+    // this.UIGroup.add(rightUI);
+    // this.UIGroup.add(this.joyStick);
+    
+
+
+    this.movementKeys = {
+        w: game.input.keyboard.addKey(Phaser.Keyboard.W),
+        a: game.input.keyboard.addKey(Phaser.Keyboard.A),
+        s: game.input.keyboard.addKey(Phaser.Keyboard.S),
+        d: game.input.keyboard.addKey(Phaser.Keyboard.D)
+    }
+};
+
+Player.prototype = Object.create(Humanoid.prototype);
+Player.prototype.constructor = Player;
+
+Player.prototype.createUI = function () {
     this.myHealthBar = new HealthBar(game, {
         x: 244,
         y: game.height - 17,
@@ -53,29 +78,22 @@ function Player(game, x, y) {
     followButton.fixedToCamera = true;
     followButton.visible = false;
 
-
     // Creating movement joystick
     this.joyStick = game.plugins.add(Phaser.Plugin.JoyStick);
     this.joyStick.create(75, this.game.height - 64);
-    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
     var leftUI = game.add.sprite(0, this.game.height - 130, 'leftUI');
     leftUI.fixedToCamera = true;
     leftUI.bringToTop();
     var rightUI = game.add.sprite(this.game.width - 321, this.game.height - 130, 'rightUI');
     rightUI.fixedToCamera = true;
     rightUI.bringToTop();
+    
+    // var bottomUI = game.add.sprite(this.game.width / 2, this.game.height - 135, 'bottomUI');
+    // bottomUI.fixedToCamera = true;
+    //bottomUI.anchor.setTo(0.5, 0.0);
 
-
-    this.movementKeys = {
-        w: game.input.keyboard.addKey(Phaser.Keyboard.W),
-        a: game.input.keyboard.addKey(Phaser.Keyboard.A),
-        s: game.input.keyboard.addKey(Phaser.Keyboard.S),
-        d: game.input.keyboard.addKey(Phaser.Keyboard.D)
-    }
 };
-
-Player.prototype = Object.create(Humanoid.prototype);
-Player.prototype.constructor = Player;
 
 Player.prototype.damage = function (value) {
     Humanoid.prototype.damage.call(this, value);

@@ -22,14 +22,14 @@ BasicGame.Game = function (game) {
     this.bg;
     this.baci;
     this.player;
-    
+
     this.floorLayer;
+    this.dirtLayer;
     this.backgroundOverlayLayer;
     this.foregroundLayer;
-    this.block;
+    this.collisionLayer;
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
-
 };
 
 BasicGame.Game.prototype = {
@@ -44,54 +44,48 @@ BasicGame.Game.prototype = {
         map.addTilesetImage('grass');
         map.addTilesetImage('treetop');
         map.addTilesetImage('trunk');
+        map.addTilesetImage('block');
+        map.addTilesetImage('dirt');
+        map.addTilesetImage('barrel');
+        map.addTilesetImage('buckets');
         this.floorLayer = map.createLayer("floorLayer");
-        this.backgroundOverlayLayer = map.createLayer("backgroundOverlay");
-        this.foregroundLayer = map.createLayer("foregroundLayer");
-        //this.block = map.objects();
-
-        //collision on blockedLayer
-        //map.setCollisionBetween(1, 100000, true, 'layer2');
-
-
-
-        //this.bg = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'dirt');
+        this.dirtLayer = map.createLayer("dirtLayer");
+        this.backgroundOverlayLayer = map.createLayer("backgroundOverlay");       
 
         this.game.entityGroup = this.game.add.group();
-        //	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-        this.player = new Player(this.game, this.game.width / 2, this.game.height / 2);
-        // skeleton = new Skeleton(this.game, 280, 280);
-        this.baci = new Baci(this.game, this.game.width / 2, this.game.height - 75);
-        // this.game.enemyGroup.add(skeleton);
+        
+        this.player = new Player(this.game, this.game.width / 2, this.game.height / 2);        
+        this.baci = new Baci(this.game, this.game.width / 2, this.game.height - 75);        
         this.baci.target = this.player;
-
 
         self.game.entityGroup.add(this.player);
         self.game.entityGroup.add(this.baci);
 
-
-        game.time.events.repeat(Phaser.Timer.SECOND * 2, 1, function () {
+        game.time.events.repeat(Phaser.Timer.SECOND * 1, 10, function () {
             var darkOne = new DarkOne(self.game, self.rnd.integerInRange(0, self.game.width), 10);
             self.game.entityGroup.add(darkOne);
             darkOne.target = self.player;
         }, this);
 
-        // In order to have the camera move, we need to increase the size of our world bounds.
-        this.game.world.setBounds(0, 0, 3200, 3200);
+        this.foregroundLayer = map.createLayer("foregroundLayer");
+        this.collisionLayer = map.createLayer("collision");
+        this.collisionLayer.renderable = false;
+        this.collisionLayer.debug = true;
+        map.setCollision(79, true, "collision");
 
-        // Make the camera follow the player.
+        this.game.world.setBounds(0, 0, 3200, 3200);        
+        this.floorLayer.resizeWorld();
+
         this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
-        //resizes the game world to match the layer dimensions
-        this.floorLayer.resizeWorld();
+        this.baci.createUI();
+        this.player.createUI();
     },
 
     update: function () {
-        //	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!        
-
-
         //collision
-        this.game.physics.arcade.collide(this.player, this.layer1);        
-        //game.physics.arcade.collide(this.game.enemyGroup);
+        this.game.physics.arcade.collide(this.game.entityGroup);
+        this.game.physics.arcade.collide(this.game.entityGroup, this.collisionLayer);
         this.game.entityGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     },
 
@@ -99,17 +93,17 @@ BasicGame.Game.prototype = {
         if (this.debugMode) {
             this.game.debug.text(this.game.time.fps || '--', 2, 14, "#a7aebe");
 
-            //if (this.player) {
-            //this.game.debug.geom(player.line);
-            // if (this.player.lines) {
-            //     for (var i = 0; i < this.player.lines.length; i++) {
-            //         this.game.debug.geom(this.player.lines[i]);
-            //     }
-            // }
-            //this.game.debug.spriteBounds(player);
-            //this.game.debug.spriteInfo(this.player, 32, 32);
-            //game.debug.geom( player.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
-            //}
+            if (this.player) {
+
+                if (this.player.lines) {
+                    for (var i = 0; i < this.player.lines.length; i++) {
+                        this.game.debug.geom(this.player.lines[i]);
+                    }
+                }
+                // this.game.debug.spriteBounds(this.player);
+                // this.game.debug.spriteInfo(this.player, 32, 32);
+                // game.debug.geom( player.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
+            }
         }
     },
 
@@ -123,13 +117,6 @@ BasicGame.Game.prototype = {
 
     },
     resize: function (width, height) {
-
-        //	If the game container is resized this function will be called automatically.
-        //	You can use it to align sprites that should be fixed in place and other responsive display things.
-
-        // this.bg.width = width;
-        // this.bg.height = height;
-
 
     }
 

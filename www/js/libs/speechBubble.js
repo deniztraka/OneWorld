@@ -10,7 +10,7 @@ function SpeechBubble(game, x, y, width, owner, text) {
     var height = 18;
     
     // Set up our text and run our custom wrapping routine on it
-    this.bitmapText = game.make.bitmapText(x + 12, y + 4 - 32, '8bitoperator', text, 22);
+    this.bitmapText = game.make.bitmapText(x + 12, y + 4 , '8bitoperator', text, 22);
     SpeechBubble.wrapBitmapText(this.bitmapText, width);
     
     // Calculate the width and height needed for the edges
@@ -48,7 +48,7 @@ function SpeechBubble(game, x, y, width, owner, text) {
     this.bitmapText.tint = 0x111111;
     
     // Offset the position to be centered on the end of the tail
-    this.pivot.set(x + 20, y + height + 50);
+    this.pivot.set(x + 25, y + height + 24);
     this.scale.setTo(0.5,0.5);
 };
 

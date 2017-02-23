@@ -2,10 +2,9 @@ function Baci(game, x, y) {
     Humanoid.call(this, game, x, y, "baci");
     this.name = "Bacı";
     this.lastSpeechTime = 0;
+    this.speechFrequency = 5000;
     this.standPosX = x;
-    this.standPosY = y;
-    this.body.velocity.x = 10;
-
+    this.standPosY = y;        
 
 };
 
@@ -33,12 +32,12 @@ Baci.prototype.createUI = function () {
 };
 
 Baci.prototype.update = function () {
-    Humanoid.prototype.update.call(this);
+    Humanoid.prototype.update.call(this);    
     // this.body.position.x = this.standPosX;
     // this.body.position.x = this.standPosY;
 
-    if (Math.random() < 0.01 && this.lastSpeechTime + 3000 < this.game.time.now) {
-        this.say("imdak!");
+    if (Math.random() < 0.01 && this.lastSpeechTime + this.speechFrequency < this.game.time.now) {
+        //this.say("imdak!");
 
         this.lastSpeechTime = this.game.time.now;
     }

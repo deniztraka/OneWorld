@@ -22,6 +22,7 @@ BasicGame.Game = function (game) {
     this.bg;
     this.baci;
     this.player;
+    this.enemy;
 
     this.floorLayer;
     this.dirtLayer;
@@ -38,7 +39,7 @@ BasicGame.Game.prototype = {
         this.game.time.advancedTiming = true;
 
         var self = this;
-        this.debugMode = true;
+        this.debugMode = false;
         var map = this.game.add.tilemap('map');
 
         map.addTilesetImage('grass');
@@ -61,7 +62,7 @@ BasicGame.Game.prototype = {
         self.game.entityGroup.add(this.player);
         self.game.entityGroup.add(this.baci);
 
-        game.time.events.repeat(Phaser.Timer.SECOND * 1, 10, function () {
+        game.time.events.repeat(Phaser.Timer.SECOND * 1, 1, function () {
             var darkOne = new DarkOne(self.game, self.rnd.integerInRange(0, self.game.width), 10);
             self.game.entityGroup.add(darkOne);
             darkOne.target = self.player;
@@ -76,13 +77,38 @@ BasicGame.Game.prototype = {
         this.game.world.setBounds(0, 0, 3200, 3200);        
         this.floorLayer.resizeWorld();
 
-        this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
-
         this.baci.createUI();
         this.player.createUI();
+
+
+        var edge = 100;
+        this.cameraDeadzone = new Phaser.Rectangle(edge, edge, this.game.camera.width - (edge * 2), this.game.camera.height - (edge * 2));
+        this.game.camera.focusOn(this.player);
+        if (this.game.device.desktop) {
+            // Only autofollow if we're on desktop.
+            this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+        }
+
+            
+            
     },
 
     update: function () {
+        if(!this.game.device.desktop){
+            var cam = this.game.camera;
+            var player = this.player;
+
+            var hEdge = player.x - cam.x;
+            var vEdge = player.y - cam.y;
+
+            if (hEdge < this.cameraDeadzone.left || hEdge > this.cameraDeadzone.right || vEdge < this.cameraDeadzone.top || vEdge > this.cameraDeadzone.bottom) {
+                var camCenter = { x: cam.x + (cam.width / 2), y: cam.y + (cam.height / 2) };
+                var diff = Phaser.Point.subtract(player, camCenter);
+                cam.x += diff.x * 1.8;
+                cam.y += diff.y * 1.8;
+            }            
+        }
+
         //collision
         this.game.physics.arcade.collide(this.game.entityGroup);
         this.game.physics.arcade.collide(this.game.entityGroup, this.collisionLayer);
@@ -90,20 +116,20 @@ BasicGame.Game.prototype = {
     },
 
     render: function () {
-        if (this.debugMode) {
-            this.game.debug.text(this.game.time.fps || '--', 2, 14, "#a7aebe");
+        this.game.debug.text(this.game.time.fps || '--', 2, 14, "#a7aebe");
+        if (this.debugMode) {            
+            // game.debug.body(this.player);
+            // if (this.enemy) {
 
-            if (this.player) {
-
-                if (this.player.lines) {
-                    for (var i = 0; i < this.player.lines.length; i++) {
-                        this.game.debug.geom(this.player.lines[i]);
-                    }
-                }
-                // this.game.debug.spriteBounds(this.player);
-                // this.game.debug.spriteInfo(this.player, 32, 32);
-                // game.debug.geom( player.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
-            }
+            //     if (this.enemy.lines) {
+            //         for (var i = 0; i < this.enemy.lines.length; i++) {
+            //             this.game.debug.geom(this.enemy.lines[i]);
+            //         }
+            //     }
+            //     // this.game.debug.spriteBounds(this.player);
+            //     // this.game.debug.spriteInfo(this.player, 32, 32);
+            //     // game.debug.geom( player.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
+            // }
         }
     },
 

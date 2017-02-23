@@ -8,7 +8,7 @@ function DarkOne(game, x, y) {
 
     this.myHealthBar = new HealthBar(game, {
         x: x,
-        y: y - 30,
+        y: y,
         width: 30,
         height: 5,
         bg: {
@@ -38,7 +38,7 @@ DarkOne.prototype.kill = function () {
 DarkOne.prototype.update = function () {
     Humanoid.prototype.update.call(this);
     if (this.myHealthBar) {
-        this.myHealthBar.setPosition(this.body.position.x + 15, this.body.position.y - 10);
+        this.myHealthBar.setPosition(this.body.position.x + 11, this.body.position.y - 23);
     }
 
     //Check target. player or baci?
@@ -144,13 +144,11 @@ DarkOne.prototype.attack = function () {
             //get ray coordinats
             var coords = this.lines[i].coordinatesOnLine();
 
-
-
             //looping through cordinats
-            for (var i = Math.round(coords.length / 2); i < coords.length; i++) {
+            for (var j = Math.round(coords.length / 2); j < coords.length; j++) {
 
                 //if a coordinat in that ray hits the enemy.
-                if (self.target.body.hitTest(coords[i][0], coords[i][1])) {
+                if (self.target.body.hitTest(coords[j][0], coords[j][1])) {
                     enemyFound = true;
                     break;
                 }

@@ -3,26 +3,10 @@ function Player(game, x, y) {
 
     this.name = "Player";
     this.attackDamage = 35;
-    // this.body.setSize(32, 32, 15, 15);
     this.body.collideWorldBounds = true;
 
 
-    
-    
-
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
-    
-    // this.UIGroup = this.game.add.group();    
-    // this.UIGroup.add(stopButton);
-    // this.UIGroup.add(followButton);
-    // this.UIGroup.add(attackButton);
-    // //this.UIGroup.add(this.myHealthBar);
-    // this.UIGroup.add(leftUI);
-    // this.UIGroup.add(rightUI);
-    // this.UIGroup.add(this.joyStick);
-    
-
 
     this.movementKeys = {
         w: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -36,6 +20,7 @@ Player.prototype = Object.create(Humanoid.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.createUI = function () {
+    var self = this;
     this.myHealthBar = new HealthBar(game, {
         x: 244,
         y: game.height - 17,
@@ -71,9 +56,14 @@ Player.prototype.createUI = function () {
 
     var followButton = game.add.button(this.game.width - 225, this.game.height - 65, 'follow', function () {
         var baci = this.game.entityGroup.getByName("Bacı");
-        baci.target = this;
-        stopButton.visible = true;
-        followButton.visible = false;
+        if (baci.inCamera) {
+            baci.target = this;
+            stopButton.visible = true;
+            followButton.visible = false;
+             self.say("Come my lady!");
+        }else{
+            self.say("She can not here me!");
+        }
     }, this);
     followButton.fixedToCamera = true;
     followButton.visible = false;
@@ -88,10 +78,11 @@ Player.prototype.createUI = function () {
     var rightUI = game.add.sprite(this.game.width - 321, this.game.height - 130, 'rightUI');
     rightUI.fixedToCamera = true;
     rightUI.bringToTop();
-    
+
     // var bottomUI = game.add.sprite(this.game.width / 2, this.game.height - 135, 'bottomUI');
     // bottomUI.fixedToCamera = true;
     //bottomUI.anchor.setTo(0.5, 0.0);
+
 
 };
 
@@ -102,6 +93,7 @@ Player.prototype.damage = function (value) {
 
 Player.prototype.update = function () {
     Humanoid.prototype.update.call(this);
+
 
     if (!this.isAttacking) {
         //Movement input

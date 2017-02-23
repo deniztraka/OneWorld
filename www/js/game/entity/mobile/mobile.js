@@ -19,6 +19,8 @@ function Mobile(game, x, y, texture) {
 
     this.animations.add('die', [20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5], 10, false);
 
+    this.body.drag = new Phaser.Point(100, 100);
+
     this.isEnemy = false;
 
     this.startingMovementSpeed = 45;
@@ -28,15 +30,15 @@ function Mobile(game, x, y, texture) {
     this.directionDegree = 0;
     this.isAttacking = false;
     this.isAttackedOnce = false;
-    this.attackDistance = 30;
+    this.attackDistance = 40;
     this.attackDamage = 10;
     this.lines = new Array(3);
     this.velocityXBeforeAttack = 0;
     this.velocityYBeforeAttack = 0;
 
     this.target = null;
-    this.seekSlowingDistance = 100;
-    this.seekStopDistance = 30;
+    this.seekSlowingDistance = 75;
+    this.seekStopDistance = 35;
     this.fleeMinHealth = 25;
 
     this.nextHealthTime = 0;
@@ -49,7 +51,7 @@ Mobile.prototype = Object.create(Phaser.Sprite.prototype);
 Mobile.prototype.constructor = Mobile;
 
 Mobile.prototype.say = function (message) {
-    this.game.world.add(new SpeechBubble(this.game, this.x, this.y, null, this, message));
+    this.game.world.add(new SpeechBubble(this.game, this.x, this.y, message.length*10, this, message));
 }
 
 Mobile.prototype.attack = function () {
@@ -121,14 +123,19 @@ Mobile.prototype.attack = function () {
             return child.isEnemy;
         }, true);
 
-        for(var i = 0; i<enemyArraySet.list.length;i++){
-            var enemy = enemyArraySet.list[i];
+        if (enemyArraySet.list.length == 0) {
+            break;
+        }
+
+        for (var j = 0; j < enemyArraySet.list.length; j++) {
+            var enemy = enemyArraySet.list[j];
             if (!damageGiven) {
                 //looping through cordinats
-                for (var i = Math.round(coords.length / 2); i < coords.length; i++) {
+                for (var t = Math.round(coords.length / 2); t < coords.length; t++) {
+                    //for (var t = coords.length; t < coords.length; t++) {
 
                     //if a coordinat in that ray hits the enemy.
-                    if (enemy.body.hitTest(coords[i][0], coords[i][1])) {
+                    if (enemy.body.hitTest(coords[t][0], coords[t][1])) {
                         enemyFound = true;
                         break;
                     }
@@ -138,6 +145,10 @@ Mobile.prototype.attack = function () {
                     enemy.damage(self.attackDamage);
                     damageGiven = true;
                 }
+            }
+
+            if (enemyFound) {
+                break;
             }
         }
 
@@ -155,7 +166,7 @@ Mobile.prototype.damage = function (value) {
         }, 50, Phaser.Easing.Exponential.Out, true, 0, 0, true);
         tween.onComplete.add(function () {
             this.tint = this.oldTint;
-        }, this);        
+        }, this);
     }
 };
 
@@ -229,7 +240,7 @@ Mobile.prototype.update = function () {
     if (!this.isAttacking) {
         if (this.game.time.now > this.nextHealthTime) {
             if (this.health < this.maxHealth) {
-                this.health++;                
+                this.health++;
             }
             this.nextHealthTime = this.game.time.totalElapsedSeconds() * 1000 + 2000;
         }

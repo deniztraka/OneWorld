@@ -48,9 +48,14 @@ Player.prototype.createUI = function () {
 
     var stopButton = game.add.button(this.game.width - 225, this.game.height - 65, 'stop', function () {
         var baci = this.game.entityGroup.getByName("Bacı");
-        baci.target = null;
-        followButton.visible = true;
-        stopButton.visible = false;
+        if (baci.inCamera) {
+            baci.target = null;
+            followButton.visible = true;
+            stopButton.visible = false;
+             self.say("Wait here !");
+        } else {
+            self.say("She can not here me!");
+        }
     }, this);
     stopButton.fixedToCamera = true;
 
@@ -60,8 +65,8 @@ Player.prototype.createUI = function () {
             baci.target = this;
             stopButton.visible = true;
             followButton.visible = false;
-             self.say("Come my lady!");
-        }else{
+            self.say("Come to me lady!");
+        } else {
             self.say("She can not here me!");
         }
     }, this);

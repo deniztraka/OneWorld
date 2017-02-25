@@ -51,7 +51,7 @@ Mobile.prototype = Object.create(Phaser.Sprite.prototype);
 Mobile.prototype.constructor = Mobile;
 
 Mobile.prototype.say = function (message) {
-    this.game.world.add(new SpeechBubble(this.game, this.x, this.y, message.length*10, this, message));
+    this.game.world.add(new SpeechBubble(this.game, this.x, this.y, message.length * 10, this, message));
 }
 
 Mobile.prototype.attack = function () {
@@ -247,7 +247,9 @@ Mobile.prototype.update = function () {
     }
 
     this.myHealthBar.setPercent(this.health / this.maxHealth * 100);
-    this.body.velocity.set(0);
+    if (this.name != "Bacı") {
+        this.body.velocity.set(0);
+    }
 };
 
 Mobile.prototype.seek = function () {

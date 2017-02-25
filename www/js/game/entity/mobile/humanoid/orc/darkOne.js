@@ -5,6 +5,7 @@ function DarkOne(game, x, y) {
     this.checkForEnemyFromSeconds = 1;
     this.attackDamage = 2;
     this.isEnemy = true;
+    
 
     this.myHealthBar = new HealthBar(game, {
         x: x,
@@ -41,18 +42,24 @@ DarkOne.prototype.update = function () {
         this.myHealthBar.setPosition(this.body.position.x + 11, this.body.position.y - 23);
     }
 
-    //Check target. player or baci?
+    //Check target. player or baci? or nothing?
     if (this.game.time.now > this.nextCheckTime) {
         var player = this.game.entityGroup.getByName("Player");
         var baci = this.game.entityGroup.getByName("Bacı");
-        var distance = Phaser.Point.distance(this.body.position, player.body.position);
-        if (distance < 100) {
+        var distanceToPlayer = Phaser.Point.distance(this.body.position, player.body.position);
+        if (distanceToPlayer < 200) {
             this.target = player;
-        } else {
-            this.target = baci;
+        } else {            
+            var distanceToBaci = Phaser.Point.distance(this.body.position, baci.body.position);
+            if (distanceToBaci < 200) {
+                this.target = baci;
+            }else{
+                this.target = undefined;
+            }            
         }
+
         //change
-        this.nextCheckTime = this.game.time.totalElapsedSeconds() + this.checkForEnemyFromSeconds * 1000;
+        this.nextCheckTime = this.game.time.totalElapsedSeconds() + this.checkForEnemyFromSeconds * 2000;
     }
 
 

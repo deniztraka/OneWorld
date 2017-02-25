@@ -51,22 +51,26 @@ BasicGame.Game.prototype = {
         map.addTilesetImage('buckets');
         this.floorLayer = map.createLayer("floorLayer");
         this.dirtLayer = map.createLayer("dirtLayer");
-        this.backgroundOverlayLayer = map.createLayer("backgroundOverlay");       
+        this.backgroundOverlayLayer = map.createLayer("backgroundOverlay");
 
         this.game.entityGroup = this.game.add.group();
-        
-        this.player = new Player(this.game, this.game.width / 2, this.game.height / 2);        
-        this.baci = new Baci(this.game, this.game.width / 2, this.game.height - 75);        
-        this.baci.target = this.player;
 
-        self.game.entityGroup.add(this.player);
-        self.game.entityGroup.add(this.baci);
-
-        game.time.events.repeat(Phaser.Timer.SECOND * 1, 1, function () {
-            var darkOne = new DarkOne(self.game, self.rnd.integerInRange(0, self.game.width), 10);
-            self.game.entityGroup.add(darkOne);
-            darkOne.target = self.player;
-        }, this);
+        if (map.objects.mobiles) {
+            var mobiles = map.objects.mobiles;
+            mobiles.forEach(function (object) {
+                if (object.type == "dayi") {
+                    var dayi = new DarkOne(self.game, object.x, object.y);
+                    self.game.entityGroup.add(dayi);
+                } else if (object.type == "player") {
+                    self.player = new Player(self.game, object.x, object.y);
+                    self.game.entityGroup.add(self.player);
+                } else if (object.type == "baci") {
+                    self.baci = new Baci(self.game, object.x, object.y);
+                    self.baci.target = self.player;
+                    self.game.entityGroup.add(self.baci);
+                }
+            });
+        }
 
         this.foregroundLayer = map.createLayer("foregroundLayer");
         this.collisionLayer = map.createLayer("collision");
@@ -74,7 +78,7 @@ BasicGame.Game.prototype = {
         this.collisionLayer.debug = true;
         map.setCollision(79, true, "collision");
 
-        this.game.world.setBounds(0, 0, 3200, 3200);        
+        this.game.world.setBounds(0, 0, 3200, 3200);
         this.floorLayer.resizeWorld();
 
         this.baci.createUI();
@@ -89,12 +93,12 @@ BasicGame.Game.prototype = {
             this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
         }
 
-            
-            
+
+
     },
 
     update: function () {
-        if(!this.game.device.desktop){
+        if (!this.game.device.desktop) {
             var cam = this.game.camera;
             var player = this.player;
 
@@ -102,11 +106,14 @@ BasicGame.Game.prototype = {
             var vEdge = player.y - cam.y;
 
             if (hEdge < this.cameraDeadzone.left || hEdge > this.cameraDeadzone.right || vEdge < this.cameraDeadzone.top || vEdge > this.cameraDeadzone.bottom) {
-                var camCenter = { x: cam.x + (cam.width / 2), y: cam.y + (cam.height / 2) };
+                var camCenter = {
+                    x: cam.x + (cam.width / 2),
+                    y: cam.y + (cam.height / 2)
+                };
                 var diff = Phaser.Point.subtract(player, camCenter);
                 cam.x += diff.x * 1.8;
                 cam.y += diff.y * 1.8;
-            }            
+            }
         }
 
         //collision
@@ -117,7 +124,7 @@ BasicGame.Game.prototype = {
 
     render: function () {
         this.game.debug.text(this.game.time.fps || '--', 2, 14, "#a7aebe");
-        if (this.debugMode) {            
+        if (this.debugMode) {
             // game.debug.body(this.player);
             // if (this.enemy) {
 

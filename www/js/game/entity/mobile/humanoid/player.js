@@ -5,6 +5,8 @@ function Player(game, x, y) {
     this.attackDamage = 35;
     this.body.collideWorldBounds = true;
 
+    this.inventory = [];
+
 
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 

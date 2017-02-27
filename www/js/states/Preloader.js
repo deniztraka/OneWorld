@@ -53,6 +53,7 @@ BasicGame.Preloader.prototype = {
 		game.load.spritesheet('button', 'assets/images/spritesheets/buttonSpriteSheet.png', 100, 100);
 		game.load.image('stop', 'assets/images/stop.png');
 		game.load.image('follow', 'assets/images/follow.png');
+		game.load.spritesheet('items', 'assets/images/spritesheets/items.png',32,32);
 
 		this.load.spritesheet('bubble-border', 'assets/images/spritesheets/speech.png', 9, 9);
 		this.load.image('bubble-tail', 'assets/images/spritesheets/bubbleTrail.png');

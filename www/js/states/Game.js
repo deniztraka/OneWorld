@@ -72,6 +72,11 @@ BasicGame.Game.prototype = {
             });
         }
 
+        var healthPotion = new HealthPotion(this.game, 100, 100);
+        this.game.entityGroup.add(healthPotion);
+
+
+
         this.foregroundLayer = map.createLayer("foregroundLayer");
         this.collisionLayer = map.createLayer("collision");
         this.collisionLayer.renderable = false;
@@ -92,9 +97,6 @@ BasicGame.Game.prototype = {
             // Only autofollow if we're on desktop.
             this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
         }
-
-
-
     },
 
     update: function () {

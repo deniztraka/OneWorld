@@ -21,6 +21,8 @@ function Mobile(game, x, y, texture) {
 
     this.body.drag = new Phaser.Point(100, 100);
 
+    this.customComponents = {};
+
     this.isEnemy = false;
 
     this.startingMovementSpeed = 45;
@@ -49,6 +51,19 @@ function Mobile(game, x, y, texture) {
 
 Mobile.prototype = Object.create(Phaser.Sprite.prototype);
 Mobile.prototype.constructor = Mobile;
+
+Mobile.prototype.getCustomComponent = function (componentName) {
+    return this.customComponents[componentName];
+};
+
+Mobile.prototype.addCustomComponent = function(comp) {
+	this.customComponents[comp.name] = comp;
+	this.customComponents[comp.name].setTarget(this);
+    this.customComponents[comp.name].init();
+    console.log("[" + this.name + "] :: added component " + comp.name);
+	return comp;
+}
+
 
 Mobile.prototype.say = function (message) {
     this.game.world.add(new SpeechBubble(this.game, this.x, this.y, message.length * 10, this, message));
@@ -246,10 +261,17 @@ Mobile.prototype.update = function () {
         }
     }
 
+    
+
     this.myHealthBar.setPercent(this.health / this.maxHealth * 100);
     if (this.name != "Bacı") {
         this.body.velocity.set(0);
     }
+
+    Object.keys(this.customComponents).forEach(function (a, b, c) {
+        this.customComponents[a].update();
+    }, this);
+
 };
 
 Mobile.prototype.seek = function () {

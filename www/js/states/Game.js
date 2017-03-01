@@ -40,55 +40,14 @@ BasicGame.Game.prototype = {
 
         var self = this;
         this.debugMode = false;
-        var map = this.game.add.tilemap('map');
-
-        map.addTilesetImage('grass');
-        map.addTilesetImage('treetop');
-        map.addTilesetImage('trunk');
-        map.addTilesetImage('block');
-        map.addTilesetImage('dirt');
-        map.addTilesetImage('barrel');
-        map.addTilesetImage('buckets');
-        this.floorLayer = map.createLayer("floorLayer");
-        this.dirtLayer = map.createLayer("dirtLayer");
-        this.backgroundOverlayLayer = map.createLayer("backgroundOverlay");
-
         this.game.entityGroup = this.game.add.group();
-
-        if (map.objects.mobiles) {
-            var mobiles = map.objects.mobiles;
-            mobiles.forEach(function (object) {
-                if (object.type == "dayi") {
-                    var dayi = new DarkOne(self.game, object.x, object.y);
-                    self.game.entityGroup.add(dayi);
-                } else if (object.type == "player") {
-                    self.player = new Player(self.game, object.x, object.y);
+                    self.player = new Player(this.game, 200, 200);                     
                     self.game.entityGroup.add(self.player);
-                } else if (object.type == "baci") {
-                    self.baci = new Baci(self.game, object.x, object.y);
-                    self.baci.target = self.player;
-                    self.game.entityGroup.add(self.baci);
-                }
-            });
-        }
-
-        var healthPotion = new HealthPotion(this.game, 100, 100);
-        this.game.entityGroup.add(healthPotion);
+       
 
 
 
-        this.foregroundLayer = map.createLayer("foregroundLayer");
-        this.collisionLayer = map.createLayer("collision");
-        this.collisionLayer.renderable = false;
-        this.collisionLayer.debug = true;
-        map.setCollision(79, true, "collision");
-
-        this.game.world.setBounds(0, 0, 3200, 3200);
-        this.floorLayer.resizeWorld();
-
-        this.baci.createUI();
-        this.player.createUI();
-
+        
 
         var edge = 100;
         this.cameraDeadzone = new Phaser.Rectangle(edge, edge, this.game.camera.width - (edge * 2), this.game.camera.height - (edge * 2));
@@ -116,29 +75,13 @@ BasicGame.Game.prototype = {
                 cam.x += diff.x * 1.8;
                 cam.y += diff.y * 1.8;
             }
-        }
-
-        //collision
-        this.game.physics.arcade.collide(this.game.entityGroup);
-        this.game.physics.arcade.collide(this.game.entityGroup, this.collisionLayer);
-        this.game.entityGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        }        
     },
 
     render: function () {
         this.game.debug.text(this.game.time.fps || '--', 2, 14, "#a7aebe");
         if (this.debugMode) {
-            // game.debug.body(this.player);
-            // if (this.enemy) {
-
-            //     if (this.enemy.lines) {
-            //         for (var i = 0; i < this.enemy.lines.length; i++) {
-            //             this.game.debug.geom(this.enemy.lines[i]);
-            //         }
-            //     }
-            //     // this.game.debug.spriteBounds(this.player);
-            //     // this.game.debug.spriteInfo(this.player, 32, 32);
-            //     // game.debug.geom( player.debugRectangle, 'rgba(255,0,0,0.25)' ) ;
-            // }
+            
         }
     },
 

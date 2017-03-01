@@ -7,17 +7,66 @@ function Mobile(game, x, y, texture) {
     this.body.setSize(20, 29, 20, 35);
     this.anchor.setTo(0.5, 0.5);
 
-    this.animations.add('up', [8 * 13, 8 * 13 + 1, 8 * 13 + 2, 8 * 13 + 3, 8 * 13 + 4, 8 * 13 + 5, 8 * 13 + 6, 8 * 13 + 7, 8 * 13 + 8], 10, true);
-    this.animations.add('left', [9 * 13, 9 * 13 + 1, 9 * 13 + 2, 9 * 13 + 3, 9 * 13 + 4, 9 * 13 + 5, 9 * 13 + 6, 9 * 13 + 7, 9 * 13 + 8], 10, true);
-    this.animations.add('down', [10 * 13, 10 * 13 + 1, 10 * 13 + 2, 10 * 13 + 3, 10 * 13 + 4, 10 * 13 + 5, 10 * 13 + 6, 10 * 13 + 7, 10 * 13 + 8], 10, true);
-    this.animations.add('right', [11 * 13, 11 * 13 + 1, 11 * 13 + 2, 11 * 13 + 3, 11 * 13 + 4, 11 * 13 + 5, 11 * 13 + 6, 11 * 13 + 7, 11 * 13 + 8], 10, true);
+    this.animationList = [
+        {
+            key:"up",
+            frames:[8 * 13, 8 * 13 + 1, 8 * 13 + 2, 8 * 13 + 3, 8 * 13 + 4, 8 * 13 + 5, 8 * 13 + 6, 8 * 13 + 7, 8 * 13 + 8],
+            frequency:10,
+            loop:true
+        },{
+            key:"left",
+            frames:[9 * 13, 9 * 13 + 1, 9 * 13 + 2, 9 * 13 + 3, 9 * 13 + 4, 9 * 13 + 5, 9 * 13 + 6, 9 * 13 + 7, 9 * 13 + 8],
+            frequency:10,
+            loop:true
+        },{
+            key:"down",
+            frames:[10 * 13, 10 * 13 + 1, 10 * 13 + 2, 10 * 13 + 3, 10 * 13 + 4, 10 * 13 + 5, 10 * 13 + 6, 10 * 13 + 7, 10 * 13 + 8],
+            frequency:10,
+            loop:true
+        },{
+            key:"right",
+            frames:[11 * 13, 11 * 13 + 1, 11 * 13 + 2, 11 * 13 + 3, 11 * 13 + 4, 11 * 13 + 5, 11 * 13 + 6, 11 * 13 + 7, 11 * 13 + 8],
+            frequency:10,
+            loop:true
+        },{
+            key:"upSlash",
+            frames:[12 * 13, 12 * 13 + 1, 12 * 13 + 2, 12 * 13 + 3, 12 * 13 + 4, 12 * 13 + 5],
+            frequency:10,
+            loop:false
+        },{
+            key:"leftSlash",
+            frames:[13 * 13, 13 * 13 + 1, 13 * 13 + 2, 13 * 13 + 3, 13 * 13 + 4, 13 * 13 + 5],
+            frequency:10,
+            loop:false
+        },{
+            key:"downSlash",
+            frames:[14 * 13, 14 * 13 + 1, 14 * 13 + 2, 14 * 13 + 3, 14 * 13 + 4, 14 * 13 + 5],
+            frequency:10,
+            loop:false
+        },{
+            key:"rightSlash",
+            frames:[15 * 13, 15 * 13 + 1, 15 * 13 + 2, 15 * 13 + 3, 15 * 13 + 4, 15 * 13 + 5],
+            frequency:10,
+            loop:false
+        },{
+            key:"die",
+            frames:[20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5],
+            frequency:10,
+            loop:false
+        }
+    ]
 
-    this.animations.add('upSlash', [12 * 13, 12 * 13 + 1, 12 * 13 + 2, 12 * 13 + 3, 12 * 13 + 4, 12 * 13 + 5], 10, false);
-    this.animations.add('leftSlash', [13 * 13, 13 * 13 + 1, 13 * 13 + 2, 13 * 13 + 3, 13 * 13 + 4, 13 * 13 + 5], 10, false);
-    this.animations.add('downSlash', [14 * 13, 14 * 13 + 1, 14 * 13 + 2, 14 * 13 + 3, 14 * 13 + 4, 14 * 13 + 5], 10, false);
-    this.animations.add('rightSlash', [15 * 13, 15 * 13 + 1, 15 * 13 + 2, 15 * 13 + 3, 15 * 13 + 4, 15 * 13 + 5], 10, false);
+    // this.animations.add('up', [8 * 13, 8 * 13 + 1, 8 * 13 + 2, 8 * 13 + 3, 8 * 13 + 4, 8 * 13 + 5, 8 * 13 + 6, 8 * 13 + 7, 8 * 13 + 8], 10, true);
+    // this.animations.add('left', [9 * 13, 9 * 13 + 1, 9 * 13 + 2, 9 * 13 + 3, 9 * 13 + 4, 9 * 13 + 5, 9 * 13 + 6, 9 * 13 + 7, 9 * 13 + 8], 10, true);
+    // this.animations.add('down', [10 * 13, 10 * 13 + 1, 10 * 13 + 2, 10 * 13 + 3, 10 * 13 + 4, 10 * 13 + 5, 10 * 13 + 6, 10 * 13 + 7, 10 * 13 + 8], 10, true);
+    // this.animations.add('right', [11 * 13, 11 * 13 + 1, 11 * 13 + 2, 11 * 13 + 3, 11 * 13 + 4, 11 * 13 + 5, 11 * 13 + 6, 11 * 13 + 7, 11 * 13 + 8], 10, true);
 
-    this.animations.add('die', [20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5], 10, false);
+    // this.animations.add('upSlash', [12 * 13, 12 * 13 + 1, 12 * 13 + 2, 12 * 13 + 3, 12 * 13 + 4, 12 * 13 + 5], 10, false);
+    // this.animations.add('leftSlash', [13 * 13, 13 * 13 + 1, 13 * 13 + 2, 13 * 13 + 3, 13 * 13 + 4, 13 * 13 + 5], 10, false);
+    // this.animations.add('downSlash', [14 * 13, 14 * 13 + 1, 14 * 13 + 2, 14 * 13 + 3, 14 * 13 + 4, 14 * 13 + 5], 10, false);
+    // this.animations.add('rightSlash', [15 * 13, 15 * 13 + 1, 15 * 13 + 2, 15 * 13 + 3, 15 * 13 + 4, 15 * 13 + 5], 10, false);
+
+    // this.animations.add('die', [20 * 13, 20 * 13 + 1, 20 * 13 + 2, 20 * 13 + 3, 20 * 13 + 4, 20 * 13 + 5], 10, false);
 
     this.body.drag = new Phaser.Point(100, 100);
 
@@ -56,18 +105,23 @@ Mobile.prototype.getCustomComponent = function (componentName) {
     return this.customComponents[componentName];
 };
 
-Mobile.prototype.addCustomComponent = function(comp) {
-	this.customComponents[comp.name] = comp;
-	this.customComponents[comp.name].setTarget(this);
+Mobile.prototype.addCustomComponent = function (comp) {
+    this.customComponents[comp.name] = comp;
+    this.customComponents[comp.name].setTarget(this);
     this.customComponents[comp.name].init();
     console.log("[" + this.name + "] :: added component " + comp.name);
-	return comp;
+    return comp;
 }
 
-
-Mobile.prototype.say = function (message) {
-    this.game.world.add(new SpeechBubble(this.game, this.x, this.y, message.length * 10, this, message));
+Mobile.prototype.addAnimations = function (animationList) {
+    for (var i = 0; i < animationList.length; i++) {
+        this.animations.add(animationList[i].key,animationList[i].frames,animationList[i].frequency,animationList[i].loop);
+        this.children.forEach(function (child) {
+            child.animations.add(animationList[i].key,animationList[i].frames,animationList[i].frequency,animationList[i].loop);
+        });
+    };
 }
+
 
 Mobile.prototype.attack = function () {
     var self = this;
@@ -209,39 +263,60 @@ Mobile.prototype.update = function () {
         return;
     }
 
-    if (this.behaviour != "flee") {
-        this.movementSpeed = this.health / this.maxHealth * this.startingMovementSpeed;
-    } else if (this.behaviour == "flee") {
-        this.movementSpeed = this.startingMovementSpeed;
-    }
-
     //Movement, animation according to movement direction/angle or attacking mode
     if (!this.isAttacking) {
         this.directionDegree = this.body.angle * 180 / Math.PI;
         if (this.body.speed == 0) {
             this.animations.stop();
+            this.children.forEach(function (child) {
+                child.animations.stop();
+            });
         }
     }
 
     if (!this.isAttacking) {
         if (this.directionDegree > -120 && this.directionDegree < -60) {
             this.play("up");
+            this.children.forEach(function (child) {
+                child.play("up")
+            });
         } else if (this.directionDegree > -60 && this.directionDegree < 60) {
             this.play("right");
+            this.children.forEach(function (child) {
+                child.play("right")
+            });
         } else if (this.directionDegree > 60 && this.directionDegree < 120) {
             this.play("down");
+            this.children.forEach(function (child) {
+                child.play("down")
+            });
         } else {
             this.play("left");
+            this.children.forEach(function (child) {
+                child.play("left")
+            });
         }
     } else if (!this.isAttackedOnce) {
         if (this.directionDegree > -120 && this.directionDegree < -60) {
             this.play("upSlash");
+            this.children.forEach(function (child) {
+                child.play("upSlash")
+            });
         } else if (this.directionDegree > -60 && this.directionDegree < 60) {
             this.play("rightSlash");
+            this.children.forEach(function (child) {
+                child.play("rightSlash")
+            });
         } else if (this.directionDegree > 60 && this.directionDegree < 120) {
             this.play("downSlash");
+            this.children.forEach(function (child) {
+                child.play("downSlash")
+            });
         } else {
             this.play("leftSlash");
+            this.children.forEach(function (child) {
+                child.play("leftSlash")
+            });
         }
 
         this.isAttackedOnce = true;
@@ -252,58 +327,8 @@ Mobile.prototype.update = function () {
         }, this);
     }
 
-    if (!this.isAttacking) {
-        if (this.game.time.now > this.nextHealthTime) {
-            if (this.health < this.maxHealth) {
-                this.health++;
-            }
-            this.nextHealthTime = this.game.time.totalElapsedSeconds() * 1000 + 2000;
-        }
-    }
-
-    
-
-    this.myHealthBar.setPercent(this.health / this.maxHealth * 100);
-    if (this.name != "Bacı") {
-        this.body.velocity.set(0);
-    }
-
     Object.keys(this.customComponents).forEach(function (a, b, c) {
         this.customComponents[a].update();
     }, this);
 
-};
-
-Mobile.prototype.seek = function () {
-    if (this.target) {
-        var velocity = Phaser.Point.normalize(Phaser.Point.subtract(this.target.body.position, this.body.position));
-
-        var distance = Phaser.Point.distance(this.body.position, this.target.body.position);
-        if (distance < this.seekSlowingDistance && distance > this.seekStopDistance) {
-            velocity.x = velocity.x * this.movementSpeed * (distance / 100);
-            velocity.y = velocity.y * this.movementSpeed * (distance / 100);
-        } else if (distance < this.seekStopDistance) {
-            velocity.x = 0;
-            velocity.y = 0;
-        } else {
-            velocity.x = velocity.x * this.movementSpeed;
-            velocity.y = velocity.y * this.movementSpeed;
-        }
-        this.body.velocity = velocity;
-    }
-    this.behaviour = "seek";
-};
-
-Mobile.prototype.flee = function () {
-    if (this.target) {
-        var velocity = Phaser.Point.normalize(Phaser.Point.subtract(this.target.body.position, this.body.position));
-        velocity.x = velocity.x * this.movementSpeed;
-        velocity.y = velocity.y * this.movementSpeed;
-        var desiredVelocity = velocity;
-        desiredVelocity.x = -desiredVelocity.x;
-        desiredVelocity.y = -desiredVelocity.y;
-
-        this.body.velocity = desiredVelocity;
-    }
-    this.behaviour = "flee";
 };

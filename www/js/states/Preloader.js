@@ -37,6 +37,7 @@ BasicGame.Preloader.prototype = {
 		this.load.image('dirt', 'assets/images/spritesheets/tilesets/dirt.png');
 		this.load.image('barrel', 'assets/images/spritesheets/tilesets/barrel.png');
 		this.load.image('buckets', 'assets/images/spritesheets/tilesets/buckets.png');
+		
 		//this.load.tilemap('map', 'assets/images/spritesheets/tilesets/grassRandom.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.tilemap('map', 'assets/images/spritesheets/tilesets/baci.json', null, Phaser.Tilemap.TILED_JSON);
 		//this.load.image('dirt', 'assets/images/dirt.png');
@@ -46,6 +47,12 @@ BasicGame.Preloader.prototype = {
 		this.load.image('leftUI', 'assets/images/left-new.png');
 		this.load.image('rightUI', 'assets/images/right-new.png');
 		this.load.image('bottomUI', 'assets/images/bottomUI.png');
+		this.load.spritesheet('character_male_body_tanned', 'assets/images/spritesheets/character/male/body/tanned.png',64,64);
+		this.load.spritesheet('character_male_hair_raven', 'assets/images/spritesheets/character/male/hair/raven.png',64,64);
+		this.load.spritesheet('character_male_torso_chest', 'assets/images/spritesheets/character/male/torso/chest_male.png',64,64);
+		this.load.spritesheet('character_male_leg_pants_teal', 'assets/images/spritesheets/character/male/leg/teal_pants_male.png',64,64);
+		this.load.spritesheet('character_male_leg_pants_red', 'assets/images/spritesheets/character/male/leg/red_pants_male.png',64,64);
+		this.load.spritesheet('character_male_feet_shoes_black', 'assets/images/spritesheets/character/male/feet/black_shoes_male.png',64,64);
 		this.load.spritesheet('player', 'assets/images/spritesheets/player.png', 64, 64);
 		this.load.spritesheet('baci', 'assets/images/spritesheets/baci.png', 64, 64);
 		this.load.spritesheet('dayi', 'assets/images/spritesheets/enemy/dayi.png', 64, 64);

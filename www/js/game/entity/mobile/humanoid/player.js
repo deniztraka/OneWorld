@@ -1,12 +1,32 @@
-function Player(game, x, y) {
-    Humanoid.call(this, game, x, y, "player");
+function Player(game, x, y) {  
+    var parts = {
+        hear: {
+            key: "character_male_hair_raven",
+            sprite: null,
+        },
+        torso: {
+            key: "character_male_torso_chest",
+            sprite: null,
+        },
+        leg: {
+            key: "character_male_leg_pants_teal",
+            sprite: null,
+        },
+        feet: {
+            key: "character_male_feet_shoes_black",
+            sprite: null,
+        }
+    };
+
+    Humanoid.call(this, game, x, y, "character_male_body_tanned",parts);
+
+    
 
     this.name = "Player";
     this.attackDamage = 35;
     this.body.collideWorldBounds = true;
 
     this.inventory = [];
-
 
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
@@ -103,12 +123,7 @@ Player.prototype.update = function () {
 
 
     if (!this.isAttacking) {
-        //Movement input
-        var joyStickCursors = this.joyStick.cursors;
-        if (joyStickCursors.left || joyStickCursors.right || joyStickCursors.up || joyStickCursors.down) {
-            this.body.velocity.x = -this.joyStick.speed.x;
-            this.body.velocity.y = -this.joyStick.speed.y;
-        }
+        //Movement input        
 
         var keyboardCursors = this.game.input.keyboard.createCursorKeys();
         if (keyboardCursors.up.isDown || this.movementKeys.w.isDown) {
